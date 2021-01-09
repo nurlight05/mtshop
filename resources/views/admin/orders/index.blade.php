@@ -1,12 +1,12 @@
 @extends('admin.base')
 
-@section('title', 'Товары')
+@section('title', 'Заказы')
 
-@section('subtitle', 'Все товары')
+@section('subtitle', 'Все заказы')
 
-@section('icon', 'pe-7s-box2')
+@section('icon', 'pe-7s-shopbag')
 
-@section('active-products', 'mm-active')
+@section('active-orders', 'mm-active')
 
 @section('content')
 <div class="">
@@ -15,13 +15,11 @@
             <div class="main-card mb-3 card">
                 <form action="{{ route('mtshop.admin.products.submit') }}" method="post">
                     @csrf
-                    <div class="card-header">{{ $productsType ?? 'Все товары' }}
+                    <div class="card-header">{{ $ordersType ?? 'Все заказы' }}
                         <div class="btn-actions-pane-right">
                             <div role="group" class="btn-group-sm btn-group">
-                                <button class="@if (!$productsType) active @endif btn btn-primary" type="button" onclick="location.href='{{ route('mtshop.admin.products') }}'">Все</button>
-                                <button class="@if ($productsType == 'Новые товары') active @endif btn btn-primary" type="button" onclick="location.href='{{ route('mtshop.admin.products', ['type' => 'new']) }}'">Новые</button>
-                                <button class="@if ($productsType == 'Хиты продаж') active @endif btn btn-primary" type="button" onclick="location.href='{{ route('mtshop.admin.products', ['type' => 'hit']) }}'">Хиты</button>
-                                <button class="@if ($productsType == 'По акции') active @endif btn btn-primary" type="button" onclick="location.href='{{ route('mtshop.admin.products', ['type' => 'dis']) }}'">По акции</button>
+                                <button class="@if (!$ordersType) active @endif btn btn-primary" type="button" onclick="location.href='{{ route('mtshop.admin.orders') }}'">Все</button>
+                                <button class="@if ($ordersType == 'Новые заказы') active @endif btn btn-primary" type="button" onclick="location.href='{{ route('mtshop.admin.orders', ['type' => 'new']) }}'">Новые</button>
                             </div>
                         </div>
                     </div>

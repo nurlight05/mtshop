@@ -1,3 +1,20 @@
+/* MY STYLES */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.u-select-none {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+/* ORIGINAL STYLES */
 .border-primary {
     border-color: #3f6ad8
 }
@@ -10051,7 +10068,7 @@ a, button, .btn {
 }
 
 .app-page-title {
-    padding: 30px;
+    padding: 15px 30px;
     margin: -30px -30px 30px;
     position: relative
 }
@@ -22811,7 +22828,7 @@ a.fc-more:hover {
         top: 0;
         transition: all .2s;
         background: #fff;
-        border-radius: 50px;
+        border-radius: .25rem;
         padding: 0 10px;
         overflow: hidden
     }
