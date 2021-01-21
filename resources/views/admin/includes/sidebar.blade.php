@@ -33,43 +33,55 @@
             <ul class="vertical-nav-menu">
                 <li class="app-sidebar__heading">Навигация</li>
                 <li>
-                    <a href="{{ route('mtshop.admin.index') }}" class="@yield('active-main')">
+                    <a href="{{ route('mtshop.admin.index') }}" class="@yield('active-main') text-truncate" title="Показатели">
                         <i class="metismenu-icon pe-7s-rocket"></i>
                         Показатели
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('mtshop.admin.banners') }}" class="@yield('active-banners')">
+                    <a href="{{ route('mtshop.admin.banners') }}" class="@yield('active-banners') text-truncate" title="Баннеры">
                         <i class="metismenu-icon pe-7s-photo-gallery"></i>
                         Баннеры
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('mtshop.admin.products') }}" class="@yield('active-products')">
+                    <a href="{{ route('mtshop.admin.products') }}" class="@yield('active-products') text-truncate" title="Товары">
                         <i class="metismenu-icon pe-7s-box2"></i>
                         Товары
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('mtshop.admin.orders') }}" class="@yield('active-orders')">
+                    <a href="{{ route('mtshop.admin.orders') }}" class="@yield('active-orders') text-truncate" title="Заказы">
                         <i class="metismenu-icon pe-7s-shopbag"></i>
                         Заказы
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('mtshop.admin.categories') }}" class="@yield('active-categories')">
+                    <a href="{{ route('mtshop.admin.categories') }}" class="@yield('active-categories') text-truncate" title="Управление категориями">
                         <i class="metismenu-icon pe-7s-network"></i>
                         Управление категориями
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('mtshop.admin.index') }}">
+                    <a href="{{ route('mtshop.admin.attributes') }}" class="@yield('active-attributes') text-truncate" title="Управление характеристиками">
+                        <i class="metismenu-icon pe-7s-edit"></i>
+                        Управление характеристиками
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('mtshop.admin.measures') }}" class="@yield('active-measures') text-truncate" title="Управление измерениями">
+                        <i class="metismenu-icon pe-7s-stopwatch"></i>
+                        Управление измерениями
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('mtshop.admin.index') }}" class="text-truncate" title="Интеграция 1С">
                         <i class="metismenu-icon pe-7s-config"></i>
                         Интеграция 1С
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('mtshop.admin.index') }}">
+                    <a href="{{ route('mtshop.admin.index') }}" class="text-truncate" title="Интеграция Kaspi">
                         <i class="metismenu-icon pe-7s-cloud-download"></i>
                         Интеграция Kaspi
                     </a>

@@ -1,0 +1,30 @@
+- 3 level categories structure
+- multi image products
+- hit, new, discount products
+
+- Product
+    - Id
+    - Code [Артикул]
+    - Name
+    - Brand
+    - Country [Страна производителя]
+    - Description
+    - Category_Id
+    - Type [Новые, Хиты, Скидка]
+    - Discount [1 - 99 %]
+    - Quantity
+
+- Images
+    - Id
+    - Name
+    - Url
+    - Product_Id
+
+
+
+- Вопросы
+    - Как происходит оплата?
+    - Как доставка осущесвляется (откуда брать данные пользователя)?
+    - Где страницы оплаты?
+    - Добавить характеристики категорий или самому товару?
+    - 

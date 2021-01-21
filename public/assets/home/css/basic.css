@@ -1,0 +1,82 @@
+/*main class start*/
+.main-color{
+  color: #FCAF23;
+}
+.bg__main{
+  background-color: #FCAF23 ;
+}
+.white{
+  color: #fff !important;
+}
+.bg__white{
+  background-color: #fff !important;
+}
+.black{
+  color: #212121 !important;
+}
+.bg__black{
+  background-color: #212121 !important;
+}
+.pb-50{
+  padding-bottom: 50px;
+}
+.pt-50{
+  padding-top: 50px;
+}
+.py-50{
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.pt-40{
+  padding-top: 40px;
+}
+.pb-40{
+  padding-bottom: 40px;
+}
+.py-40{
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.pt-30{
+  padding-top: 30px;
+}
+.pb-30{
+  padding-bottom: 30px;
+}
+.py-30{
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.pl-30{
+  padding-left: 30px;
+}
+.pt-20{
+  padding-top: 20px;
+}
+.pb-20{
+  padding-bottom: 20px;
+}
+.py-20{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.pt-10{
+  padding-top: 10px;
+}
+.pb-10{
+  padding-bottom: 10px;
+}
+.py-10{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.p-0{
+  padding: 0px;
+}
+.mr-20{
+  margin-right: 20px; 
+}
+.mr-50{
+  margin-right: 50px;
+}
+/*main class end*/

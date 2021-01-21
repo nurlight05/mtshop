@@ -6,9 +6,26 @@ use App\Http\Controllers\Admin\AdminBannerController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminMeasureController;
+use App\Http\Controllers\Admin\AdminAttributeController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CatalogueController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SearchController;
 
-Route::get('/', [HomeController::class, 'index'])->name('mtshop.index');
+Route::get('/', [HomeController::class, 'index'])->name('mtshop.home.index');
+
+Route::get('/about', [AboutController::class, 'index'])->name('mtshop.about.index');
+
+Route::get('/cart', [CartController::class, 'index'])->name('mtshop.cart.index');
+
+Route::get('/catalogue', [CatalogueController::class, 'index'])->name('mtshop.catalogue.index');
+
+Route::get('/products/product', [ProductController::class, 'show'])->name('mtshop.products.show');
+
+Route::post('/search', [SearchController::class, 'index'])->name('mtshop.search.index');
 
 Route::prefix('admin')->group(function() {
     Route::get('/', [AdminController::class, 'index'])->name('mtshop.admin.index');
@@ -35,7 +52,34 @@ Route::prefix('admin')->group(function() {
     Route::get('categories/{slug}/edit', [AdminCategoryController::class, 'edit'])->name('mtshop.admin.categories.edit');
     Route::post('categories/{slug}/update', [AdminCategoryController::class, 'update'])->name('mtshop.admin.categories.update');
     Route::get('categories/{slug}/delete', [AdminCategoryController::class, 'delete'])->name('mtshop.admin.categories.delete');
+    Route::post('categories/all/submit', [AdminCategoryController::class, 'submit'])->name('mtshop.admin.categories.submit');
+
+    Route::get('measures', [AdminMeasureController::class, 'index'])->name('mtshop.admin.measures');
+    Route::get('measures/create', [AdminMeasureController::class, 'create'])->name('mtshop.admin.measures.create');
+    Route::post('measures/store', [AdminMeasureController::class, 'store'])->name('mtshop.admin.measures.store');
+    Route::get('measures/{id}/show', [AdminMeasureController::class, 'show'])->name('mtshop.admin.measures.show');
+    Route::get('measures/{id}/edit', [AdminMeasureController::class, 'edit'])->name('mtshop.admin.measures.edit');
+    Route::post('measures/{id}/update', [AdminMeasureController::class, 'update'])->name('mtshop.admin.measures.update');
+    Route::get('measures/{id}/delete', [AdminMeasureController::class, 'delete'])->name('mtshop.admin.measures.delete');
+    Route::post('measures/all/submit', [AdminMeasureController::class, 'submit'])->name('mtshop.admin.measures.submit');
+
+    Route::get('attributes', [AdminAttributeController::class, 'index'])->name('mtshop.admin.attributes');
+    Route::get('attributes/create', [AdminAttributeController::class, 'create'])->name('mtshop.admin.attributes.create');
+    Route::post('attributes/store', [AdminAttributeController::class, 'store'])->name('mtshop.admin.attributes.store');
+    Route::get('attributes/{id}/show', [AdminAttributeController::class, 'show'])->name('mtshop.admin.attributes.show');
+    Route::get('attributes/{id}/edit', [AdminAttributeController::class, 'edit'])->name('mtshop.admin.attributes.edit');
+    Route::post('attributes/{id}/update', [AdminAttributeController::class, 'update'])->name('mtshop.admin.attributes.update');
+    Route::get('attributes/{id}/delete', [AdminAttributeController::class, 'delete'])->name('mtshop.admin.attributes.delete');
+    Route::post('attributes/all/submit', [AdminAttributeController::class, 'submit'])->name('mtshop.admin.attributes.submit');
 });
+
+// mtshop/
+// about
+// 
+
+
+
+
 
 // admin
 

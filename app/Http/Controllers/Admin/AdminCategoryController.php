@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Helper\Helper;
 
 class AdminCategoryController extends Controller
 {
@@ -24,7 +25,9 @@ class AdminCategoryController extends Controller
 
     public function store(Request $request)
     {
-        dd($request);
+        $name = $request->name;
+        $slug = Helper::getSlug($name);
+        dd($slug);
     }
 
     public function edit($slug)
@@ -40,5 +43,10 @@ class AdminCategoryController extends Controller
     public function delete($slug)
     {
         dd($slug);
+    }
+
+    public function submit(Request $request)
+    {
+        dd($request);
     }
 }
