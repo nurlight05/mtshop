@@ -9,6 +9,7 @@
     <title>@yield('title') @hasSection('subtitle') - @yield('subtitle') @endif</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <link href="{{ asset('assets/admin/styles/main.css') }}" rel="stylesheet">
+    @stack('styles')
 </head>
 <body>
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
@@ -29,6 +30,9 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="{{ asset('assets/admin/scripts/main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/admin/scripts/sortable.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/admin/scripts/our.js') }}"></script>
+    {{-- <script type="text/javascript" src="{{ asset('assets/admin/scripts/our.js') }}"></script> --}}
+    @include('admin.includes.notification')
+    @stack('modals')
+    @stack('scripts')
 </body>
 </html>
