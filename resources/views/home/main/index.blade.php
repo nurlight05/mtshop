@@ -6,11 +6,11 @@
 <div class="f-container">
 	<section class="main__cards">
 		<div class="main__first">
-			<img src="{{ asset('assets/home/img/banner/main_banner.png') }}" alt="">
-			<img src="{{ asset('assets/home/img/banner/main_banner.png') }}" alt="">
-			<img src="{{ asset('assets/home/img/banner/main_banner.png') }}" alt="">
-			<img src="{{ asset('assets/home/img/banner/main_banner.png') }}" alt="">
-			<img src="{{ asset('assets/home/img/banner/main_banner.png') }}" alt="">
+            @forelse ($slides as $item)
+                <img src="{{ asset($item->url) }}" alt="" @if ($item->hyperlink) onclick="location.href='{{ url($item->hyperlink) }}'" @endif style="cursor: pointer;">
+            @empty
+                {{-- Nothing --}}
+            @endforelse
 		</div>
 		<div class="main__second">
 			<div class="card__main">
@@ -185,10 +185,10 @@
 							</div>
 						</div>
 						<div class="new__box5">
-							<img src="{{ asset('assets/home/img/banner/banner_new5.svg') }}" alt="">
+							<img src="{{ asset($banners1[0]->url) }}" alt="" @if ($banners1[0]->hyperlink) onclick="location.href='{{ url($banners1[0]->hyperlink) }}'" @endif style="cursor: pointer;">
 						</div>
 						<div class="new__box6">
-							<img src="{{ asset('assets/home/img/banner/banner_new6.svg') }}" alt="">
+							<img src="{{ asset($banners1[1]->url) }}" alt="" @if ($banners1[1]->hyperlink) onclick="location.href='{{ url($banners1[1]->hyperlink) }}'" @endif style="cursor: pointer;">
 						</div>
 				    </div>
 				</div>
@@ -490,7 +490,8 @@
 	<section class="banner3">
 		<div class="row">
             <div class="col-lg-12">
-                <div class="banner3__grid">           				<img src="{{ asset('assets/home/img/banner/banner3.png') }}" alt="">
+                <div class="banner3__grid">           				
+                    <img src="{{ asset($banners2[0]->url) }}" alt="" @if ($banners2[0]->hyperlink) onclick="location.href='{{ url($banners2[0]->hyperlink) }}'" @endif style="cursor: pointer;">
                 </div>
             </div>
         </div>

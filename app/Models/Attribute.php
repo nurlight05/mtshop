@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Attribute extends Model
 {
@@ -16,5 +17,9 @@ class Attribute extends Model
 
     public function measure() {
         return $this->belongsTo(Measure::class);
+    }
+
+    public function getNameAttribute($value) {
+        return Str::ucfirst($value);
     }
 }

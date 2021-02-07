@@ -15,6 +15,15 @@ use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
+
+
 Route::get('/', [HomeController::class, 'index'])->name('mtshop.home.index');
 
 Route::get('/about', [AboutController::class, 'index'])->name('mtshop.about.index');
@@ -27,10 +36,16 @@ Route::get('/products/product', [ProductController::class, 'show'])->name('mtsho
 
 Route::post('/search', [SearchController::class, 'index'])->name('mtshop.search.index');
 
-Route::prefix('admin')->group(function() {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('mtshop.admin.index');
 
+    Route::get('profile', [AdminController::class, 'profile'])->name('mtshop.admin.profile');
+    Route::get('profile/edit', [AdminController::class, 'edit'])->name('mtshop.admin.profile.edit');
+    Route::post('profile/update', [AdminController::class, 'update'])->name('mtshop.admin.profile.update');
+
     Route::get('banners', [AdminBannerController::class, 'index'])->name('mtshop.admin.banners');
+    Route::get('banners/{banner}/edit', [AdminBannerController::class, 'edit'])->name('mtshop.admin.banners.edit');
+    Route::get('banners/{banner}/update', [AdminBannerController::class, 'update'])->name('mtshop.admin.banners.update');
 
     Route::get('products', [AdminProductController::class, 'index'])->name('mtshop.admin.products');
     Route::get('products/create', [AdminProductController::class, 'create'])->name('mtshop.admin.products.create');
@@ -40,6 +55,7 @@ Route::prefix('admin')->group(function() {
     Route::post('products/{slug}/update', [AdminProductController::class, 'update'])->name('mtshop.admin.products.update');
     Route::get('products/{slug}/delete', [AdminProductController::class, 'delete'])->name('mtshop.admin.products.delete');
     Route::post('products/all/submit', [AdminProductController::class, 'submit'])->name('mtshop.admin.products.submit');
+    Route::post('products/image/{id}/delete', [AdminProductController::class, 'submit'])->name('mtshop.admin.products.image.delete');
 
     Route::get('orders', [AdminOrderController::class, 'index'])->name('mtshop.admin.orders');
     Route::get('orders/{id}/show', [AdminOrderController::class, 'show'])->name('mtshop.admin.orders.show');
@@ -51,8 +67,9 @@ Route::prefix('admin')->group(function() {
     Route::get('categories/{slug}/show', [AdminCategoryController::class, 'show'])->name('mtshop.admin.categories.show');
     Route::get('categories/{slug}/edit', [AdminCategoryController::class, 'edit'])->name('mtshop.admin.categories.edit');
     Route::post('categories/{slug}/update', [AdminCategoryController::class, 'update'])->name('mtshop.admin.categories.update');
-    Route::get('categories/{slug}/delete', [AdminCategoryController::class, 'delete'])->name('mtshop.admin.categories.delete');
+    Route::get('categories/{category}/delete', [AdminCategoryController::class, 'delete'])->name('mtshop.admin.categories.delete');
     Route::post('categories/all/submit', [AdminCategoryController::class, 'submit'])->name('mtshop.admin.categories.submit');
+    Route::post('categories/attributes/get', [AdminCategoryController::class, 'getAttributes'])->name('mtshop.admin.categories.attributes');
 
     Route::get('measures', [AdminMeasureController::class, 'index'])->name('mtshop.admin.measures');
     Route::get('measures/create', [AdminMeasureController::class, 'create'])->name('mtshop.admin.measures.create');
@@ -73,38 +90,4 @@ Route::prefix('admin')->group(function() {
     Route::post('attributes/all/submit', [AdminAttributeController::class, 'submit'])->name('mtshop.admin.attributes.submit');
 });
 
-// mtshop/
-// about
-// 
-
-
-
-
-
-// admin
-
-// admin/banners
-
-// admin/products
-// admin/products?type=hit
-// admin/products?type=discount
-// admin/products/create
-// admin/products/store
-// admin/products/{product}/show
-// admin/products/{product}/edit
-// admin/products/{product}/update
-// admin/products/{product}/delete
-// admin/products/all/submit
-
-// admin/orders
-// admin/orders?type=new
-// admin/orders/{order}/show
-// admin/orders/{order}/delete
-
-// admin/categories
-// admin/categories/create
-// admin/categories/store
-// admin/categories/{category}/show
-// admin/categories/{category}/edit
-// admin/categories/{category}/update
-// admin/categories/{category}/delete
+require __DIR__.'/auth.php';
