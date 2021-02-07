@@ -67,12 +67,15 @@
                             <div class="btn-group">
                                 <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
                                     {{-- <img width="42" class="rounded-circle" src="{{ asset('assets/admin/images/avatars/1.jpg') }}" alt=""> --}}
-                                    <span class="widget-heading">Админ Админ</span>
+                                    <span class="widget-heading">{{ Auth::user()->name }}</span>
                                     <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                 </a>
                                 <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                    <button type="button" tabindex="0" class="dropdown-item">Профиль</button>
-                                    <button type="button" tabindex="0" class="dropdown-item btn-outline-danger">Выйти</button>
+                                    <button type="button" tabindex="0" class="dropdown-item" onclick="location.href='{{ route('mtshop.admin.profile') }}'">Профиль</button>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button tabindex="0" class="dropdown-item btn-outline-danger">Выйти</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

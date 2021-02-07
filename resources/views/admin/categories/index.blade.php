@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table class="align-middle mb-0 table table-borderless table-striped table-hover sortable">
+                        <table class="align-middle mb-0 table table-borderless table-hover sortable">
                             <thead>
                                 <tr>
                                     <th class="text-center sorttable_nosort">
@@ -35,72 +35,109 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <tr title="Это стандартная категория. Нельзя удалить или изменить!">
-                                <td class="text-center">
-                                    <input class="cursor-pointer" type="checkbox" name="product-000541" id="not-deletable" title="Это стандартная категория. Нельзя удалить или изменить!" disabled>
-                                </td>
-                                <td>
-                                    <div class="widget-content p-0">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left flex2">
-                                                <div class="widget-heading">DeWALT LAKA DWE4051</div>
+                                {{-- @dd($categories) --}}
+                                @forelse ($categories as $item)
+                                    {{-- <tr title="Это стандартная категория. Нельзя удалить или изменить!">
+                                        <td class="text-center">
+                                            <input class="cursor-pointer" type="checkbox" name="product-000541" id="not-deletable" title="Это стандартная категория. Нельзя удалить или изменить!" disabled>
+                                        </td>
+                                        <td>
+                                            <div class="widget-content p-0">
+                                                <div class="widget-content-wrapper">
+                                                    <div class="widget-content-left flex2">
+                                                        <div class="widget-heading">DeWALT LAKA DWE4051</div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-center nowrap">
-                                    <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.edit', ['slug' => '000541']) }}'" title="Это стандартная категория. Нельзя удалить или изменить!" disabled>
-                                        <i class="pe-7s-pen"></i>
-                                    </button>
-                                    <button type="button" id="PopoverCustomT-1" class="btn btn-danger btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.delete', ['slug' => '000541']) }}'" title="Это стандартная категория. Нельзя удалить или изменить!" disabled>
-                                        <i class="pe-7s-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">
-                                    <input class="cursor-pointer" type="checkbox" name="product-000541" id="">
-                                </td>
-                                <td>
-                                    <div class="widget-content p-0">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left flex2">
-                                                <div class="widget-heading">DeWALT LAKA DWE4051</div>
+                                        </td>
+                                        <td class="text-center nowrap">
+                                            <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.edit', ['slug' => '000541']) }}'" title="Это стандартная категория. Нельзя удалить или изменить!" disabled>
+                                                <i class="pe-7s-pen"></i>
+                                            </button>
+                                            <button type="button" id="PopoverCustomT-1" class="btn btn-danger btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.delete', ['slug' => '000541']) }}'" title="Это стандартная категория. Нельзя удалить или изменить!" disabled>
+                                                <i class="pe-7s-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr> --}}
+                                    <tr>
+                                        <td class="text-center">
+                                            <input class="cursor-pointer" type="checkbox" name="categories[]" value="{{ $item->id }}">
+                                        </td>
+                                        <td>
+                                            <div class="widget-content p-0">
+                                                <div class="widget-content-wrapper">
+                                                    <div class="widget-content-left flex2">
+                                                        <div class="widget-heading">{{ $item->name }}</div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-center nowrap">
-                                    <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.edit', ['slug' => '000541']) }}'" title="Редактировать">
-                                        <i class="pe-7s-pen"></i>
-                                    </button>
-                                    <button type="button" id="PopoverCustomT-1" class="btn btn-danger btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.delete', ['slug' => '000541']) }}'" title="Удалить">
-                                        <i class="pe-7s-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">
-                                    <input class="cursor-pointer" type="checkbox" name="product-000541" id="">
-                                </td>
-                                <td>
-                                    <div class="widget-content p-0">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left flex2">
-                                                <div class="widget-heading">DeWALT LAKA DWE4051</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-center nowrap">
-                                    <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.edit', ['slug' => '000541']) }}'" title="Редактировать">
-                                        <i class="pe-7s-pen"></i>
-                                    </button>
-                                    <button type="button" id="PopoverCustomT-1" class="btn btn-danger btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.delete', ['slug' => '000541']) }}'" title="Удалить">
-                                        <i class="pe-7s-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                                        </td>
+                                        <td class="text-center nowrap">
+                                            <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.edit', ['slug' => $item->slug]) }}'">
+                                                <i class="pe-7s-pen"></i>
+                                            </button>
+                                            <button type="button" id="PopoverCustomT-1" class="btn btn-danger btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.delete', ['category' => $item->slug]) }}'">
+                                                <i class="pe-7s-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @forelse ($item->childs as $item2)
+                                        <tr>
+                                            <td class="text-center">
+                                                {{-- <input class="cursor-pointer" type="checkbox" name="product-000541"> --}}
+                                            </td>
+                                            <td style="padding-left: 3rem;">
+                                                <div class="widget-content p-0">
+                                                    <div class="widget-content-wrapper">
+                                                        <div class="widget-content-left flex2">
+                                                            <div class="widget-heading">{{ $item2->name }}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center nowrap">
+                                                <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.edit', ['slug' => $item2->slug]) }}'">
+                                                    <i class="pe-7s-pen"></i>
+                                                </button>
+                                                <button type="button" id="PopoverCustomT-1" class="btn btn-danger btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.delete', ['category' => $item2->slug]) }}'">
+                                                    <i class="pe-7s-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @forelse ($item2->childs as $item3)
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{-- <input class="cursor-pointer" type="checkbox" name="product-000541"> --}}
+                                                </td>
+                                                <td style="padding-left: 6rem;">
+                                                    <div class="widget-content p-0">
+                                                        <div class="widget-content-wrapper">
+                                                            <div class="widget-content-left flex2">
+                                                                <div class="widget-heading">{{ $item3->name }}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center nowrap">
+                                                    <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.edit', ['slug' => $item3->slug]) }}'">
+                                                        <i class="pe-7s-pen"></i>
+                                                    </button>
+                                                    <button type="button" id="PopoverCustomT-1" class="btn btn-danger btn-sm" onclick="location.href='{{ route('mtshop.admin.categories.delete', ['category' => $item3->slug]) }}'">
+                                                        <i class="pe-7s-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            {{-- Nothing --}}
+                                        @endforelse
+                                    @empty
+                                        {{-- Nothing --}}
+                                    @endforelse
+                                @empty
+                                    <tr>
+                                        <td class="text-center" colspan="3">Пока здесь ничего нет</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

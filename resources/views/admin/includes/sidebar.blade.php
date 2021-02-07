@@ -33,9 +33,21 @@
             <ul class="vertical-nav-menu">
                 <li class="app-sidebar__heading">Навигация</li>
                 <li>
+                    <a href="{{ route('mtshop.home.index') }}" title="Перейти на сайт">
+                        <i class="metismenu-icon pe-7s-back"></i>
+                        Перейти на сайт
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('mtshop.admin.index') }}" class="@yield('active-main') text-truncate" title="Показатели">
                         <i class="metismenu-icon pe-7s-rocket"></i>
                         Показатели
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('mtshop.admin.profile') }}" class="@yield('active-profile') text-truncate" title="Профиль">
+                        <i class="metismenu-icon pe-7s-user"></i>
+                        Профиль
                     </a>
                 </li>
                 <li>

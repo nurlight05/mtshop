@@ -18,6 +18,10 @@
     display: none;
 }
 
+.del {
+    text-decoration: line-through;
+}
+
 /* ORIGINAL STYLES */
 .border-primary {
     border-color: #3f6ad8

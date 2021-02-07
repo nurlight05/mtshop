@@ -27,12 +27,13 @@
                 <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
         </div>
     </div>
+    @stack('modals')
+    @include('admin.includes.notification')
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="{{ asset('assets/admin/scripts/main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/admin/scripts/sortable.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/admin/scripts/bootstrap.js') }}"></script>
     {{-- <script type="text/javascript" src="{{ asset('assets/admin/scripts/our.js') }}"></script> --}}
-    @include('admin.includes.notification')
-    @stack('modals')
     @stack('scripts')
 </body>
 </html>
