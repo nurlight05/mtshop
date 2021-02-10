@@ -4,21 +4,21 @@
             <a href="{{ route('mtshop.home.index') }}"><img src="{{ asset('assets/home/img/logo/logo.png') }}" alt="Логотип сайта"></a>
         </div>
         <div class="mobile-logo">
-            <a href="/"><img src="{{ asset('assets/home/img/logo/logo.png') }}" alt="Логотип сайта"></a>
+            <a href="{{ route('mtshop.home.index') }}"><img src="{{ asset('assets/home/img/logo/logo.png') }}" alt="Логотип сайта"></a>
         </div>
         <div class="menu">
             <ul>
                 <li id="header-li">
-                    <a href="{{ route('mtshop.about.index') }}">Доставка</a>
+                    <a href="{{ route('mtshop.about.index', ['tab' => 'delivery']) }}">Доставка</a>
                 </li>
                 <li id="header-li">
-                     <a href="{{ route('mtshop.about.index') }}">Гарантии</a>
+                     <a href="{{ route('mtshop.about.index', ['tab' => 'guarantee']) }}">Гарантии</a>
                 </li>
                 <li id="header-li">
-                    <a href="{{ route('mtshop.about.index') }}">Оплата</a>
+                    <a href="{{ route('mtshop.about.index', ['tab' => 'payment']) }}">Оплата</a>
                 </li>
                 <li id="header-li">
-                    <a href="{{ route('mtshop.about.index') }}">Контакты</a>
+                    <a href="{{ route('mtshop.about.index', ['tab' => 'contacts']) }}">Контакты</a>
                 </li>
             </ul>            
         </div>
@@ -46,20 +46,42 @@
                        </i> Каталог товаров <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li>
-                        <a class="trigger right-caret" href="{{ route('mtshop.catalogue.index') }}">Инструменты</a>
-                        <ul class="dropdown-menu sub-menu">
-                            <li><a href="#">Level 2</a></li>
-                            <li><a href="#">Level 2</a></li>
-                            <li><a href="#">Level 2</a></li>
-                            <li><a href="#">Level 2</a></li>
-                            <li><a href="#">Level 2</a></li>
-                            <li><a href="#">Level 2</a></li>
-                            <li><a href="#">Level 2</a></li>
-                            <li><a href="#">Level 2</a></li>
-                        </ul>
-                    </li>
-                    <li>
+                    @forelse ($categories->slice(0,11) as $item)
+                        <li>
+                            <a class="trigger right-caret text-truncate" href="{{ route('mtshop.catalogue.index', ['category' => $item->slug]) }}">{{ $item->name }}</a>
+                            <ul class="dropdown-menu sub-menu">
+                                @if ($item->childs)
+                                    @forelse ($item->childs as $item2)
+                                        <li>
+                                            <a class="trigger right-caret" href="{{ route('mtshop.catalogue.index', ['category' => $item2->slug]) }}">{{ $item2->name }}</a>
+                                            <ul class="dropdown-menu sub-menu">
+                                                @if ($item2->childs)
+                                                    @forelse ($item2->childs as $item3)
+                                                        <li><a href="{{ route('mtshop.catalogue.index', ['category' => $item3->slug]) }}">{{ $item3->name }}</a></li>
+                                                    @empty
+                                                        {{-- Nothing --}}
+                                                    @endforelse
+                                                @endif
+                                            </ul>
+                                        </li>
+                                    @empty
+                                        {{-- Nothing --}}
+                                    @endforelse
+                                @endif
+                            </ul>
+                        </li>
+                    @empty
+                        {{-- Nothing --}}
+                    @endforelse
+                    @if ($categories->count() >= 12)
+                        <div class="btn-2 btn-all">
+                            <a href="{{ route('mtshop.catalogue.index') }}">Показать  все категории ({{ $categories->count() }})</a>
+                        </div>
+                    {{-- <li>
+                        <a class="trigger text-truncate" href="">Показать все категории ({{ $categories->count() }})</a>
+                    </li> --}}
+                    @endif
+                    {{-- <li>
                         <a href="#" class="trigger right-caret">Отделочные материалы</a>
                         <ul class="dropdown-menu sub-menu">
                             <li><a class="trigger right-caret">Level 2</a>
@@ -76,8 +98,8 @@
                     <li><a href="#">Бытовая техника</a></li>
                     <li><a href="#">Двери и замки</a></li>
                     <div class="btn-2 btn-all">
-                          <a href="#mobile-category">Показать  все категории (15)</a>
-                      </div>
+                        <a href="#mobile-category">Показать  все категории (15)</a>
+                    </div> --}}
                 </ul>
             </div>
         </div>
@@ -131,7 +153,7 @@
                      Ваша корзина
                  </span> 
                  <a href="{{ route('mtshop.cart.index') }}">
-                     товаров(<span>0</span>) 
+                     товаров<span>@if (session()->has('products')) ({{ count(session('products')) }}) @else (0) @endif</span> 
                  </a>
              </div>
          </div>

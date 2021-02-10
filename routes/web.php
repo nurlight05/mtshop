@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogueController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
 
@@ -30,11 +31,15 @@ Route::get('/about', [AboutController::class, 'index'])->name('mtshop.about.inde
 
 Route::get('/cart', [CartController::class, 'index'])->name('mtshop.cart.index');
 
-Route::get('/catalogue', [CatalogueController::class, 'index'])->name('mtshop.catalogue.index');
+Route::match(['get', 'post'], '/catalogue', [CatalogueController::class, 'index'])->name('mtshop.catalogue.index');
 
-Route::get('/products/product', [ProductController::class, 'show'])->name('mtshop.products.show');
+Route::get('/products/{product:slug}/show', [ProductController::class, 'show'])->name('mtshop.products.show');
+Route::get('/products/{product:slug}/add-to-cart', [ProductController::class, 'addToCart'])->name('mtshop.products.addtocart');
+Route::get('/products/{product:slug}/remove-from-cart', [ProductController::class, 'removeFromCart'])->name('mtshop.products.removefromcart');
 
 Route::post('/search', [SearchController::class, 'index'])->name('mtshop.search.index');
+
+Route::post('/order/store', [OrderController::class, 'store'])->name('mtshop.order.store');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('mtshop.admin.index');
@@ -45,7 +50,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     Route::get('banners', [AdminBannerController::class, 'index'])->name('mtshop.admin.banners');
     Route::get('banners/{banner}/edit', [AdminBannerController::class, 'edit'])->name('mtshop.admin.banners.edit');
-    Route::get('banners/{banner}/update', [AdminBannerController::class, 'update'])->name('mtshop.admin.banners.update');
+    Route::post('banners/{banner}/update', [AdminBannerController::class, 'update'])->name('mtshop.admin.banners.update');
 
     Route::get('products', [AdminProductController::class, 'index'])->name('mtshop.admin.products');
     Route::get('products/create', [AdminProductController::class, 'create'])->name('mtshop.admin.products.create');
@@ -69,7 +74,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::post('categories/{slug}/update', [AdminCategoryController::class, 'update'])->name('mtshop.admin.categories.update');
     Route::get('categories/{category}/delete', [AdminCategoryController::class, 'delete'])->name('mtshop.admin.categories.delete');
     Route::post('categories/all/submit', [AdminCategoryController::class, 'submit'])->name('mtshop.admin.categories.submit');
-    Route::post('categories/attributes/get', [AdminCategoryController::class, 'getAttributes'])->name('mtshop.admin.categories.attributes');
+    Route::get('categories/attributes/get', [AdminCategoryController::class, 'getAttributes'])->name('mtshop.admin.categories.attributes');
 
     Route::get('measures', [AdminMeasureController::class, 'index'])->name('mtshop.admin.measures');
     Route::get('measures/create', [AdminMeasureController::class, 'create'])->name('mtshop.admin.measures.create');

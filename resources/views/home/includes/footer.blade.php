@@ -42,16 +42,16 @@
 							<a>Интернет-магазин</a>
 						</li>
 						<li>
-							<a href="#">Каталог товаров</a>
+							<a href="{{ route('mtshop.catalogue.index') }}">Каталог товаров</a>
 						</li>
 						<li>
-							<a href="#">Новые товары</a>
+							<a href="{{ route('mtshop.catalogue.index', ['type' => 'new']) }}">Новые товары</a>
 						</li>
 						<li>
-							<a href="#">Акции</a>
+							<a href="{{ route('mtshop.catalogue.index', ['type' => 'discount']) }}">Акции</a>
 						</li>
 						<li>
-							<a href="#">Хит продажи</a>
+							<a href="{{ route('mtshop.catalogue.index', ['type' => 'hit']) }}">Хит продажи</a>
 						</li>
 					</ul>
 				</div>
@@ -61,16 +61,16 @@
 							<a>Компания</a>
 						</li>
 						<li>
-							<a href="#">О компании</a>
+							<a href="{{ route('mtshop.about.index', ['tab' => 'about']) }}">О компании</a>
 						</li>
 						<li>
-							<a href="#">Контактная информация</a>
+							<a href="{{ route('mtshop.about.index', ['tab' => 'contacts']) }}">Контактная информация</a>
 						</li>
 						<li>
-							<a href="#">Вопросы и ответы</a>
+							<a href="{{ route('mtshop.about.index', ['tab' => 'faq']) }}">Вопросы и ответы</a>
 						</li>
 						<li>
-							<a href="#">Поставщикам</a>
+							<a href="{{ route('mtshop.about.index', ['tab' => 'provider']) }}">Поставщикам</a>
 						</li>
 					</ul>
 				</div>
@@ -80,16 +80,16 @@
 							<a>Помощь</a>
 						</li>
 						<li>
-							<a href="#">Гарантии</a>
+							<a href="{{ route('mtshop.about.index', ['tab' => 'guarantee']) }}">Гарантии</a>
 						</li>
 						<li>
-							<a href="#">Оплата</a>
+							<a href="{{ route('mtshop.about.index', ['tab' => 'payment']) }}">Оплата</a>
 						</li>
 						<li>
-							<a href="#">Доставка</a>
+							<a href="{{ route('mtshop.about.index', ['tab' => 'delivery']) }}">Доставка</a>
 						</li>
 						<li>
-							<a href="#">Возврат</a>
+							<a href="{{ route('mtshop.about.index', ['tab' => 'exchange']) }}">Возврат</a>
 						</li>
 					</ul>
 				</div>

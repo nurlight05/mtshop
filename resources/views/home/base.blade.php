@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="sample/breadcrumbs.css">
 
 	<link rel="stylesheet" href="{{ asset('assets/home/css/responsive.css') }}">
+
+    @stack('styles')
+
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 </head>
 <body>
@@ -23,6 +26,9 @@
     @yield('content')
     @include('home.includes.footer')
 </body>
+
+@stack('modals')
+
 <div class="mobile-action">
     <a href="#mobile-category">
         <img src="{{ asset('assets/home/img/icons/hamburger.png') }}">
@@ -47,13 +53,14 @@
     <div class="popup">
         <a class="close" id="closeModal" href="#">×</a>
         <h2 id="modal-title">Каталог товаров</h2>
-        <a href="" class="titles">Сантехника</a>
-        <a href="" class="titles">Стройматериалы</a>
-        <a href="" class="titles">Электротовары</a>
-        <a href="" class="titles">        Сад, огород и дача</a>
-        <a href="" class="titles">Активный отдых и спорт</a>
-        <a href="" class="titles">Товары для дома</a>
-        <a href="" class="titles">Бытовая техника</a>
+        @forelse ($categories as $item)
+            <a class="text-truncate" href="{{ route('mtshop.catalogue.index', ['category' => $item->slug]) }}" class="titles">{{ $item->name }}</a>
+        @empty
+            {{-- Nothing --}}
+        @endforelse
+        {{-- @if ($categories->count() >= 7)
+            <a href="{{ route('mtshop.catalogue.index') }}" class="titles">Показать все категории ({{ $categories->count() }})</a>
+        @endif --}}
     </div>
 </div>
 <div id="mobile-city" class="overlay">
@@ -79,14 +86,14 @@
         <div class="popup">
             <a class="close" id="closeModal" href="#">×</a>
             <h2 id="modal-title">Навигация по сайту</h2>
-            <a href="{{ route('mtshop.about.index') }}" class="titles">О компании</a>
-            <a href="{{ route('mtshop.about.index') }}" class="titles">Доставка</a>
-            <a href="{{ route('mtshop.about.index') }}" class="titles">Гарантии</a>
-            <a href="{{ route('mtshop.about.index') }}" class="titles">Оплата</a>
-            <a href="{{ route('mtshop.about.index') }}" class="titles">Вопросы и ответы</a>
-            <a href="{{ route('mtshop.about.index') }}" class="titles">Договор публичной оферты</a>
-            <a href="{{ route('mtshop.about.index') }}" class="titles">Поставщикам</a>
-            <a href="{{ route('mtshop.about.index') }}" class="titles" style="margin-bottom: 20px;">Обмен и возврат</a>
+            <a href="{{ route('mtshop.about.index', ['tab' => 'about']) }}" class="titles">О компании</a>
+            <a href="{{ route('mtshop.about.index', ['tab' => 'delivery']) }}" class="titles">Доставка</a>
+            <a href="{{ route('mtshop.about.index', ['tab' => 'guarantee']) }}" class="titles">Гарантии</a>
+            <a href="{{ route('mtshop.about.index', ['tab' => 'payment']) }}" class="titles">Оплата</a>
+            <a href="{{ route('mtshop.about.index', ['tab' => 'faq']) }}" class="titles">Вопросы и ответы</a>
+            <a href="{{ route('mtshop.about.index', ['tab' => 'agreement']) }}" class="titles">Договор публичной оферты</a>
+            <a href="{{ route('mtshop.about.index', ['tab' => 'provider']) }}" class="titles">Поставщикам</a>
+            <a href="{{ route('mtshop.about.index', ['tab' => 'exchange']) }}" class="titles" style="margin-bottom: 20px;">Обмен и возврат</a>
             <a href="tel:+7700000000" class="titles2">
                 <span>
                     <i class="fa fa-phone" aria-hidden="true"></i>+7 (707) 000 00 00
