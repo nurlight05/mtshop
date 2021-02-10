@@ -88,31 +88,38 @@
 				</div>
 				<div class="col-lg-12">
 					<div class="new__grid">
-						<div class="new__box1 card">
-							<div class="box__header">
-								<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-								</p>
-								<img src="{{ asset('assets/home/img/card/new.png') }}" alt="">				
-							</div>
-							<a href="{{ route('mtshop.home.index') }}">
-								<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-							</a>
-							<p class="card__type">Электротовары
-							</p>
-							<h3 class="card__title ">
-								<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-							</h3>
-							<hr class="card__line">
-							<div class="box__header">
-								<span class="card-price">
-									25890 тг
-								</span>
-								<button class="btn-2 btn-buy">
-									В корзину <i class="fas fa-cart-arrow-down"></i>
-								</button>
-							</div>
-						</div>
-						<div class="new__box2 card">
+                        @forelse ($productsNew as $item)
+                            <div class="new__box{{ $loop->index + 1 }} card">
+                                <div class="box__header">
+                                    <p class="card__type">Артикул:<span class="card__type">{{ $item->vcode }}</span>
+                                    </p>
+                                    <img src="{{ asset('assets/home/img/card/new.png') }}" alt="">				
+                                </div>
+                                <a href="{{ route('mtshop.products.show', ['product' => $item->slug]) }}">
+                                    @if ($item->images()->exists())
+                                        <img src="{{ $item->images[0]->url }}" alt="">
+                                    @else
+                                        <img src="{{ asset('assets/home/img/products/no_photo.png') }}" alt="">
+                                    @endif
+                                </a>
+                                <p class="card__type">{{ $item->category->name }}</p>
+                                <h3 class="card__title text-truncate">
+                                    <a href="{{ route('mtshop.products.show', ['product' => $item->slug]) }}">{{ $item->name }}</a> 
+                                </h3>
+                                <hr class="card__line">
+                                <div class="box__header">
+                                    <span class="card-price">
+                                        @if ($item->discount) {{ $item->discount_price }} @else {{ $item->price }} @endif тг
+                                    </span>
+                                    <button class="btn btn-primary" style="background-color: #004BA3; border: #004BA3; padding: 0 8px;" @if ($item->quantity == 0) disabled @endif>
+                                        В корзину <i class="fas fa-cart-arrow-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        @empty
+                            {{-- Nothing --}}
+                        @endforelse
+						{{-- <div class="new__box2 card">
 							<div class="box__header">
 								<p class="card__type">Артикул:<span class="card__type"> 000541</span>
 								</p>
@@ -183,7 +190,7 @@
 									В корзину <i class="fas fa-cart-arrow-down"></i>
 								</button>
 							</div>
-						</div>
+						</div> --}}
 						<div class="new__box5">
 							<img src="{{ asset($banners1[0]->url) }}" alt="" @if ($banners1[0]->hyperlink) onclick="location.href='{{ url($banners1[0]->hyperlink) }}'" @endif style="cursor: pointer;">
 						</div>
@@ -243,246 +250,37 @@
 			</div>
 			<div class="col-lg-12">
 				<div class="popular__grid">
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<img src="{{ asset('assets/home/img/card/popular.png') }}" alt="">
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<img src="{{ asset('assets/home/img/card/popular.png') }}" alt="">
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<img src="{{ asset('assets/home/img/card/popular.png') }}" alt="">
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<img src="{{ asset('assets/home/img/card/popular.png') }}" alt="">
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<img src="{{ asset('assets/home/img/card/popular.png') }}" alt="">
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<img src="{{ asset('assets/home/img/card/popular.png') }}" alt="">
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<img src="{{ asset('assets/home/img/card/popular.png') }}" alt="">
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class=" card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<img src="{{ asset('assets/home/img/card/popular.png') }}" alt="">
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<img src="{{ asset('assets/home/img/card/popular.png') }}" alt="">
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<img src="{{ asset('assets/home/img/card/popular.png') }}" alt="">
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
+                    @forelse ($productsHit as $item)
+                        <div class="card">
+                            <div class="box__header">
+                                <p class="card__type">Артикул:<span class="card__type">{{ $item->vcode }}</span>
+                                </p>
+                                <img src="{{ asset('assets/home/img/card/popular.png') }}" alt="">
+                            </div>
+                            <a href="{{ route('mtshop.products.show', ['product' => $item->slug]) }}">
+                                @if ($item->images()->exists())
+                                <img src="{{ $item->images[0]->url }}" alt="">
+                                @else
+                                <img src="{{ asset('assets/home/img/products/no_photo.png') }}" alt="">
+                                @endif
+                            </a>
+                            <p class="card__type">{{ $item->category->name }}</p>
+                            <h3 class="card__title text-truncate">
+                                <a href="{{ route('mtshop.products.show', ['product' => $item->slug]) }}">{{ $item->name }}</a> 
+                            </h3>
+                            <hr class="card__line">
+                            <div class="box__header">
+                                <span class="card-price">
+                                    @if ($item->discount) {{ $item->discount_price }} @else {{ $item->price }} @endif тг
+                                </span>
+                                <button class="btn btn-primary" style="background-color: #004BA3; border: #004BA3; padding: 0 8px;" @if ($item->quantity == 0) disabled @endif>
+                                    В корзину <i class="fas fa-cart-arrow-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                    @empty
+                        {{-- Nothing --}}
+                    @endforelse
 			    </div>
 			</div>
 		</div>
@@ -507,126 +305,37 @@
 			</div>
 			<div class="col-lg-12">
 				<div class="discounts__grid">
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<span class="box__header__discounts">-20%</span>
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<span class="box__header__discounts">-20%</span>
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<span class="box__header__discounts">-20%</span>
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<span class="box__header__discounts">-20%</span>
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card">
-						<div class="box__header">
-							<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-							</p>
-							<span class="box__header__discounts">-20%</span>
-						</div>
-						<a href="{{ route('mtshop.home.index') }}">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-						</a>
-						<p class="card__type">Электротовары
-						</p>
-						<h3 class="card__title ">
-							<a href="{{ route('mtshop.home.index') }}">DeWALT LAKA DWE4051</a> 
-						</h3>
-						<hr class="card__line">
-						<div class="box__header">
-							<span class="card-price">
-								25890 тг
-							</span>
-							<button class="btn-2 btn-buy">
-								В корзину <i class="fas fa-cart-arrow-down"></i>
-							</button>
-						</div>
-					</div>
+					@forelse ($productsDiscount as $item)
+                        <div class="card">
+                            <div class="box__header">
+                                <p class="card__type">Артикул:<span class="card__type">{{ $item->vcode }}</span>
+                                </p>
+                                <span class="box__header__discounts">-{{ $item->discount }}%</span>
+                            </div>
+                            <a href="{{ route('mtshop.products.show', ['product' => $item->slug]) }}">
+                                @if ($item->images()->exists())
+                                <img src="{{ $item->images[0]->url }}" alt="">
+                                @else
+                                <img src="{{ asset('assets/home/img/products/no_photo.png') }}" alt="">
+                                @endif
+                            </a>
+                            <p class="card__type">{{ $item->category->name }}</p>
+                            <h3 class="card__title text-truncate">
+                                <a href="{{ route('mtshop.products.show', ['product' => $item->slug]) }}">{{ $item->name }}</a> 
+                            </h3>
+                            <hr class="card__line">
+                            <div class="box__header">
+                                <span class="card-price">
+                                    @if ($item->discount) {{ $item->discount_price }} @else {{ $item->price }} @endif тг
+                                </span>
+                                <button class="btn btn-primary" style="background-color: #004BA3; border: #004BA3; padding: 0 8px;" @if ($item->quantity == 0) disabled @endif>
+                                    В корзину <i class="fas fa-cart-arrow-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                    @empty
+                        {{-- Nothing --}}
+                    @endforelse
 			    </div>
 			</div>
 		</div>

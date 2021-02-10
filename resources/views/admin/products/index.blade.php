@@ -58,7 +58,7 @@
                                         </td>
                                         <td class="text-center">{{ $item->category->name }}</td>
                                         <td class="text-center">
-                                            <div class="badge badge-success">{{ $item->type }}</div>
+                                            <div class="badge badge-success">{{ $item->type_name }}</div>
                                         </td>
                                         <td class="text-center nowrap">
                                             <button type="button" id="PopoverCustomT-1" class="btn btn-warning btn-sm" onclick="location.href='{{ route('mtshop.admin.products.show', ['slug' => $item->slug]) }}'" title="Просмотр">

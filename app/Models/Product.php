@@ -20,6 +20,9 @@ class Product extends Model
         'quantity'
     ];
 
+    protected $appends = array('discount_price');
+
+    // Related models
     public function attributes() {
         return $this->belongsToMany(Attribute::class)->withPivot('value')->withTimestamps();
     }
@@ -32,13 +35,14 @@ class Product extends Model
         return $this->hasMany(Image::class);
     }
 
-    public function getTypeAttribute($value) {
+    // Mutators
+    public function getTypeNameAttribute() {
         $type = null;
-        if ($value == 1)
+        if ($this->type == 1)
             $type = 'Новый';
-        if ($value == 2)
+        if ($this->type == 2)
             $type = 'Хит';
-        if ($value == 3)
+        if ($this->type == 3)
             $type = 'По акции';
         return $type;
     }
@@ -49,8 +53,14 @@ class Product extends Model
         return round($price * (100 - $discount) / 100);
     }
 
+    // Methods
     public static function getProductBySlug($slug) {
         $product = Product::where('slug', $slug)->first();
         return $product;
+    }
+
+    public static function getActiveProducts() {
+        $products = Product::where('quantity', '>', 0)->get();
+        return $products;
     }
 }

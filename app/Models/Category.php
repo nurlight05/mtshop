@@ -19,6 +19,10 @@ class Category extends Model
         return $category;
     }
 
+    public function parent() {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
+
     public function childs() {
         return $this->hasMany(Category::class, 'parent_id');
     }
@@ -28,6 +32,10 @@ class Category extends Model
     }
 
     public function products() {
+        return $this->hasMany(Product::class)->where('quantity', '>', 0);
+    }
+
+    public function productsAll() {
         return $this->hasMany(Product::class);
     }
 }
