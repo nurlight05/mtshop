@@ -43,16 +43,16 @@
 									<div class="number-group">
 										<div class="">
 											с
-											<input class="number-input" type="number" placeholder="c" value="{{ $products->min('price') }}" min="0" />
+											<input class="number-input" type="number" placeholder="c" value="{{ $curMinPrice ?? $minPrice }}" min="0" />
 										</div>
 										<div class="">
 											до  
-											<input class="number-input" type="number" placeholder="до" value="{{ $products->max('price') }}" min="0" />
+											<input class="number-input" type="number" placeholder="до" value="{{ $curMaxPrice ?? $maxPrice }}" min="0" />
 										</div>
 									</div>
 									<div class="range-group">
-										<input class="range-input" name="min_price" value="{{ $products->min('price') }}" min="{{ $minPrice }}" max="{{ $maxPrice }}" step="10" type="range" style="" />
-										<input class="range-input" name="max_price" value="{{ $products->max('price') }}" min="{{ $minPrice }}" max="{{ $maxPrice }}" step="10" type="range" style="" />
+										<input class="range-input" name="min_price" value="{{ $curMinPrice ?? $minPrice }}" min="{{ $minPrice }}" max="{{ $maxPrice }}" step="10" type="range" style="" />
+										<input class="range-input" name="max_price" value="{{ $curMaxPrice ?? $maxPrice }}" min="{{ $minPrice }}" max="{{ $maxPrice }}" step="10" type="range" style="" />
 									</div>
 					            </div>
                                 <div class="category__items__apply">
@@ -308,9 +308,9 @@
                         @endforelse
 				    </div>
                     
-                    {{-- <div class="pagination-container">
+                    <div class="pagination-container">
                         {!! $products->appends(request()->except('page'))->onEachSide(2)->links() !!}
-                    </div> --}}
+                    </div>
 				</div>
 			</div>	
 	    </div>				

@@ -27,18 +27,19 @@
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-12 p-0">
                         <div class="table-responsive">
-                            <table class="basket__table  table-hover " id="myTable">
+                            <table class="table basket__table table-hover" id="myTable">
                                 <thead>
                                     <tr>
-                                        <td>
+                                        <th>
                                             Товар
-                                        </td>
-                                        <td>
+                                        </th>
+                                        <th>
                                             Количество
-                                        </td>
-                                        <td>
+                                        </th>
+                                        <th>
                                             Стоимость
-                                        </td>
+                                        </th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,7 +52,7 @@
                                         @endphp
                                         @foreach ($products as $item)
                                             <tr>
-                                                <td>
+                                                <td class="align-middle">
                                                     @if ($item->images()->exists())
                                                         <img src="{{ $item->images[0]->url }}" alt="">
                                                     @else
@@ -61,19 +62,19 @@
                                                     <a class="text-truncate"
                                                         href="{{ route('mtshop.products.show', ['product' => $item->slug]) }}">{{ $item->name }}</a>
                                                 </td>
-                                                <td>
+                                                <td class="align-middle">
                                                     <input class="quantity" name="quantity[]" data-id="{{ $item->id }}"
                                                         type="number" value="1" min="1" max="{{ $item->quantity }}"
                                                         data-validate="{required:true,'validate-greater-than-zero':true}">
                                                 </td>
-                                                <td>
+                                                <td class="align-middle">
                                                     <span class="price">
                                                         @if ($item->discount)
                                                         {{ $item->discount_price }} @else {{ $item->price }}
                                                         @endif
                                                     </span> тг
                                                 </td>
-                                                <td><a class=""
+                                                <td class="align-middle"><a class=""
                                                         href="{{ route('mtshop.products.removefromcart', ['product' => $item->slug]) }}">
                                                         <svg width="27" height="27" viewBox="0 0 27 27" fill="none"
                                                             xmlns="http://www.w3.org/2000/svg">
@@ -90,7 +91,7 @@
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td>Ничего не найдено</td>
+                                            <td class="text-center" colspan="4">Ничего не найдено</td>
                                         </tr>
                                     @endif
                                 </tbody>
@@ -125,7 +126,7 @@
                                     </label>
                                     <div class="tabs2">
                                         <a class="tab-links2 active" data-tab="1">
-                                            Самовызов</a>
+                                            Самовывоз</a>
                                         <a class="tab-links2" data-tab="2">Курьером в руки</a>
                                     </div>
                                     <div class="content-wrapper">
@@ -195,8 +196,13 @@
                                             <label for="checkbox__basket">
                                                 Перезвоните мне для подтверждения заказа
                                             </label>
-                                            <button class="btn-2 btn-basket" type="submit" id="submit2" value="Submit2"
-                                                disabled>ПОДВЕРДИТЬ ЗАКАЗ</button>
+                                            @if (session()->has('products'))
+                                                <button class="btn-2 btn-basket" type="submit" id="submit2" value="Submit2"
+                                            disabled>ПОДТВЕРДИТЬ ЗАКАЗ</button>
+                                            @else
+                                                <button class="btn-2 btn-basket" type="submit"
+                                            disabled>ПОДТВЕРДИТЬ ЗАКАЗ</button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

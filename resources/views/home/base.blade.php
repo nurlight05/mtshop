@@ -54,10 +54,11 @@
         <a class="close" id="closeModal" href="#">×</a>
         <h2 id="modal-title">Каталог товаров</h2>
         @forelse ($categories as $item)
-            <a class="text-truncate" href="{{ route('mtshop.catalogue.index', ['category' => $item->slug]) }}" class="titles">{{ $item->name }}</a>
+            <a href="{{ route('mtshop.catalogue.index', ['category' => $item->slug]) }}" class="titles">{{ $item->name }}</a>
         @empty
             {{-- Nothing --}}
         @endforelse
+        {{-- <a href="{{ route('mtshop.catalogue.index') }}" class="titles">Показать все категории ({{ $categories->count() }})</a> --}}
         {{-- @if ($categories->count() >= 7)
             <a href="{{ route('mtshop.catalogue.index') }}" class="titles">Показать все категории ({{ $categories->count() }})</a>
         @endif --}}
@@ -107,85 +108,79 @@
 <div id="mobile-filter" class="overlay">
         <div class="popup">
             <a class="close" id="closeModal" href="#">×</a>
-            <h2 id="modal-title">Фильтр</h2>
+            <h2 id="modal-title" class="mt-0">Фильтр</h2>
             <div class="filter-options-content" style="display: block;">  
-                <form action="">
-                    <div class="shop-sidebar">
-                        <span class="sidebar-title">Товар
-                        </span>
-                        <div class="sidebar-tags">
-                            <div class="radio">
-                                <input id="radio-3" name="radio" type="radio" checked>
-                                <label for="radio-3" class="radio-label">Есть в наличий</label>
-                            </div>
-                            <div class="radio">
-                                <input id="radio-4" name="radio" type="radio">
-                                <label  for="radio-4" class="radio-label">Все товары</label>
-                            </div>
-                        </div>
-                    </div>
+                <label for="" class="category__items__title">
+                    @if ($category)
+                        Подкатегории
+                    @else
+                        Категории
+                    @endif
+                </label>
+                <ul class="category__items__list">
+                    @if ($category)
+                            @forelse ($category->childs as $item)
+                                <li class="text-truncate">
+                                    <a href="{{ route('mtshop.catalogue.index', ['category' => $item->slug]) }}">{{ $item->name }}</a>
+                                </li>
+                            @empty
+                                {{-- Nothing --}}
+                            @endforelse
+                        @else
+                            @forelse ($categories as $item)
+                                <li class="text-truncate">
+                                    <a href="{{ route('mtshop.catalogue.index', ['category' => $item->slug]) }}">{{ $item->name }}</a>
+                                </li>
+                            @empty
+                                {{-- Nothing --}}
+                        @endforelse
+                    @endif
+                </ul>
+                <form action="{{ request()->fullUrl() }}" method="POST">
+                    @csrf
                     <div class="filter level-filter level-req">
                         <div id="rangeSlider2" class="range-slider">
                             <span>Цена</span>
                             <div class="number-group">
-                                с
-                                <input class="number-input" type="number" placeholder="c" value="30" min="30" max="432000" />
-                                до  
-                                <input class="number-input" type="number" placeholder="до" value="432000" min="30" max="432000" />
+                                <div class="">
+                                    с
+                                    <input class="number-input" type="number" placeholder="c" value="{{ $curMinPrice ?? $minPrice }}" min="0" />
+                                </div>
+                                <div class="">
+                                    до  
+                                    <input class="number-input" type="number" placeholder="до" value="{{ $curMaxPrice ?? $maxPrice }}" min="0" />
+                                </div>
                             </div>
                             <div class="range-group">
-                                <input class="range-input" value="30" min="30" max="432000" step="10" type="range" />
-                                <input class="range-input" value="432000" min="30" max="432000" step="10" type="range" />
+                                <input class="range-input" name="min_price" value="{{ $curMinPrice ?? $minPrice }}" min="{{ $minPrice }}" max="{{ $maxPrice }}" step="10" type="range" style="" />
+                                <input class="range-input" name="max_price" value="{{ $curMaxPrice ?? $maxPrice }}" min="{{ $minPrice }}" max="{{ $maxPrice }}" step="10" type="range" style="" />
                             </div>
                         </div>
-                    </div>
-                    <div class="category__items__brend">
-                        <span>Бренд</span> 
-                        <div class="category__items__brend__list scrollbar-deep-purple thin">
-                            <div>
-                                <input type="checkbox" id="test1" />
-                                <label for="test1">Audi</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="test2" />
-                                <label for="test2">BMW</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="test3" />
-                                <label for="test3">KIA</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="test4" />
-                                <label for="test4">Toyota</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="test5" />
-                                <label for="test5">Mazda</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="test6" />
-                                <label for="test6">Honda</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="test7" />
-                                <label for="test7">Tesla</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="test8" />
-                                <label for="test8">Ford</label>
-                            </div>
+                        <div class="category__items__apply">
+                            <button class="btn-2 btn-apply" type="submit" >
+                                Применить
+                            </button>
                         </div>
-                    </div>
-                    <div class="category__items__apply">
-                        <button class="btn-2 btn-apply" type="submit" >
-                            Применить
-                        </button>
                     </div>
                 </form>
+                <div class="shop-sidebar">
+                    <span class="sidebar-title">Товар
+                    </span>
+                    <div class="sidebar-tags">
+                        <div class="radio">
+                            <input id="radio-3" name="status" type="radio" value="{{ request()->fullUrlWithQuery(['status' => 'out_of_stock']) }}" @if (request()->input('status') != 'in_stock') checked @endif>
+                            <label  for="radio-3" class="radio-label">Все товары</label>
+                        </div>
+                        <div class="radio">
+                            <input id="radio-4" name="status" type="radio" value="{{ request()->fullUrlWithQuery(['status' => 'in_stock']) }}" @if (request()->input('status') == 'in_stock') checked @endif>
+                            <label for="radio-4" class="radio-label">Есть в наличий</label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> --}}
 <script src="{{ asset('assets/home/js/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/home/js/secondary.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/home/js/jquery.simplePagination.js') }}"></script>
@@ -298,6 +293,15 @@
     numbers = (number1) + (number2)
     document.write(numbers);
     document.getElementById('result__calc').Text = numbers;
+</script>
+<script>
+    $('#radio-3').click(function() {
+        window.location.assign($(this).val())
+    })
+    
+    $('#radio-4').click(function() {
+        window.location.assign($(this).val())
+    })
 </script>
 @stack('scripts')
 </html>

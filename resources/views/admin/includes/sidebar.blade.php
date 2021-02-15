@@ -86,16 +86,16 @@
                         Управление измерениями
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="{{ route('mtshop.admin.index') }}" class="text-truncate" title="Интеграция 1С">
                         <i class="metismenu-icon pe-7s-config"></i>
                         Интеграция 1С
                     </a>
-                </li>
+                </li> --}}
                 <li>
-                    <a href="{{ route('mtshop.admin.index') }}" class="text-truncate" title="Интеграция Kaspi">
+                    <a href="{{ route('mtshop.admin.integration') }}" class="@yield('active-integration') text-truncate" title="Интеграция Kaspi - Satu">
                         <i class="metismenu-icon pe-7s-cloud-download"></i>
-                        Интеграция Kaspi
+                        Интеграция Kaspi - Satu
                     </a>
                 </li>
             </ul>

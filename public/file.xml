@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kaspi_catalog date="string" xmlns="kaspiShopping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="kaspiShopping http://kaspi.kz/kaspishopping.xsd">
+ <company>CompanyName</company>
+ <merchantid>CompanyID</merchantid>
+ <offers>
+  <offer sku="vcode">
+   <model>name</model>
+   <brand>brand</brand>
+   <availabilities>
+    <availability available="quantity &gt; 0" storeId="myFavoritePickupPoint1"/>
+   </availabilities>
+   <price>price</price>
+  </offer>
+ </offers>
+</kaspi_catalog>

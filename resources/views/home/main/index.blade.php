@@ -13,34 +13,37 @@
             @endforelse
 		</div>
 		<div class="main__second">
-			<div class="card__main">
-				<div class="box__header">
-					<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-					</p>
-				</div>
-				<div>
-					<a href="{{ route('mtshop.home.index') }}">
-						<img src="{{ asset('assets/home/img/card/second_card.svg') }}" alt="">
-					</a>
-				</div>
-				<div>
-					<h3 class="card__title">
-					 	Дрель шуруповёрт ALTECO CD 2110Li X2  
-					</h3>
-					<hr class="card2__line">
-				</div>
-				<div class="box__header">
-					<span class="card__title">
-						25890 тг
-					</span>
-					<button class="btn-2 btn-buy">
-						<i class="fas fa-cart-arrow-down"></i>
-					</button>
-					<button class="btn-2 btn-order">
-						Быстрый заказ 
-					</button>
-				</div>
-			</div>
+            @if ($mainProduct)
+                <div class="card__main">
+                    <div class="box__header">
+                        <p class="card__type">Артикул:<span class="card__type"> {{ $mainProduct->vcode }}</span>
+                        </p>
+                    </div>
+                    <div>
+                        <a href="{{ route('mtshop.products.show', ['product' => $mainProduct->slug]) }}">
+                            @if ($mainProduct->images()->exists())
+                                <img src="{{ $mainProduct->images[0]->url }}" alt="" style="width: 100%; height: auto;">
+                            @else
+                                <img src="{{ asset('assets/home/img/products/no_photo.png') }}" alt="" style="width: 100%; height: auto;">
+                            @endif
+                        </a>
+                    </div>
+                    <div>
+                        <h3 class="card__title" onclick="location.href='{{ route('mtshop.products.show', ['product' => $mainProduct->slug]) }}'" style="cursor: pointer;">
+                            {{ $mainProduct->name }}
+                        </h3>
+                        <hr class="card2__line">
+                    </div>
+                    <div class="box__header">
+                        <span class="card__title">
+                            @if ($mainProduct->discount) {{ $mainProduct->discount_price }} @else {{ $mainProduct->price }} @endif тг
+                        </span>
+                        <button class="btn btn-primary" style="background-color: #004BA3; border: #004BA3; padding: 0 8px;" @if ($mainProduct->quantity == 0) disabled @endif onclick="location.href='{{ route('mtshop.products.addtocart', ['product' => $mainProduct->slug]) }}'">
+                            <i class="fas fa-cart-arrow-down"></i>
+                        </button>
+                    </div>
+                </div>
+            @endif
 		</div>
 	</section>
 	<section class="banner">
@@ -111,7 +114,7 @@
                                     <span class="card-price">
                                         @if ($item->discount) {{ $item->discount_price }} @else {{ $item->price }} @endif тг
                                     </span>
-                                    <button class="btn btn-primary" style="background-color: #004BA3; border: #004BA3; padding: 0 8px;" @if ($item->quantity == 0) disabled @endif>
+                                    <button class="btn btn-primary" style="background-color: #004BA3; border: #004BA3; padding: 0 8px;" @if ($item->quantity == 0) disabled @endif onclick="location.href='{{ route('mtshop.products.addtocart', ['product' => $item->slug]) }}'">
                                         В корзину <i class="fas fa-cart-arrow-down"></i>
                                     </button>
                                 </div>

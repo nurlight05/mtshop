@@ -245,6 +245,8 @@
             $attributesUnused = subtractArrays($attributesAll, $categoryAttributes)
             // load unused attributes select
             refreshAttributesSelect()
+
+            refreshAttributesAddButton()
         })
 
         // Enable create button if name input is not empty

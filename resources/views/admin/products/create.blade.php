@@ -76,7 +76,19 @@
                     <input type="file" name="images[]" class="form-control-file" multiple>
                 </div>
             </div>
-            <div id="attributes"></div>
+            {{-- <div id="attributes"></div> --}}
+            <div id="attributesDb"></div>
+            <div id="attributesCategory"></div>
+
+            <div class="position-relative row form-group">
+                <label for="" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10" id="attributes-field">
+                    <button class="btn btn-success js-attributes-modal-button mb-1" type="button" data-toggle="modal" data-target="#modalAddAttribute">
+                        <i class="pe-7s-plus"></i>
+                        Добавить характеристику
+                    </button>
+                </div>
+            </div>
             <div class="position-relative row form-group">
                 <label for="quantity" class="col-sm-2 col-form-label">Количество</label>
                 <div class="col-sm-10">
@@ -100,6 +112,28 @@
 </div>
 @endsection
 
+@push('modals')
+    <div class="modal fade" id="modalAddAttribute" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Добавить характеристику</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <select class="form-control" name="" id="attributesSelect"></select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-success js-attribute-add">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endpush
+
 @push('styles')
     {{-- styles --}}
 @endpush
@@ -108,13 +142,143 @@
     {{-- scripts --}}
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
-        $('#type').change(function() {
-            if ($(this).val() == 3) {
+        $dbAttributes = []
+        $dbAttributesCopy = []
+        $attributes = []
+        $categoryAttributes = []
+
+        function comparer($otherArray){
+            return function($current){
+                return $otherArray.filter(function($other){
+                    return $other.id == $current.id
+                }).length == 0;
+            }
+        }
+
+        function sortByKeyDesc($array, key) {
+            return $array.sort(function (a, b) {
+                var x = a[key]; var y = b[key];
+                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+            });
+        }
+
+        function sortByKeyAsc($array, key) {
+            return $array.sort(function (a, b) {
+                var x = a[key]; var y = b[key];
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            });
+        }
+
+        function refreshAttributesSelect() {
+            $options = ''
+            $dbAttributes.forEach(element => {
+                $options += '<option value="'+ element.id +'">'+ element.name
+                if (element.measure)
+                    $options += ' ('+ element.measure.name +')'
+                $options += '</option>'
+            })
+            $('#attributesSelect').html($options)
+        }
+
+        function refreshAttributesAddButton() {
+            if ($dbAttributes.length == 0)
+                $('.js-attributes-modal-button').prop('disabled', true)
+            else
+                $('.js-attributes-modal-button').prop('disabled', false)
+        }
+
+        function refreshAttributesSelectDelete($id) {
+            $dbAttributes = $.grep($dbAttributes, function(e){ 
+                return e.id != $id;
+            })
+            $dbAttributes = sortByKeyAsc($dbAttributes, 'name');
+        }
+
+        function refreshProductAttributesAdd($id) {
+            $attribute = $dbAttributes.find(x => x.id == $id)
+            $attributes.push($attribute)
+            // sortByKeyAsc($attributes, 'id')
+        }
+
+        function refreshAttributesDbFieldAdd($id) {
+            $attribute = $dbAttributes.find(x => x.id == $id)
+            $attributeInput =    '<div class="position-relative row form-group">' +
+                                    '<label for="attribute-' + $attribute.id + '" class="col-sm-2 col-form-label">' + $attribute.name.substr(0,1).toUpperCase() + $attribute.name.substr(1); 
+            if ($attribute.measure != null)
+                $attributeInput += ' (' + $attribute.measure.name + ')'
+            $attributeInput +=   ' *</label>' +
+                                '<div class="col-sm-10">' +
+                                    '<input name="values[]" id="attribute-' + $attribute.id + '" type="text" class="form-control" value="">' +
+                                    '<input name="attributes[]" type="hidden" value="' + $attribute.id + '">' +
+                                '</div>' +
+                            '</div>'
+            $('#attributesDb').append($attributeInput)
+        }
+
+        $('.js-attribute-add').click(function() {
+            $id = $('#attributesSelect').children('option:selected').val()
+            // add attribute to product attributes
+            refreshProductAttributesAdd($id)
+
+            // add input to attributes db field
+            refreshAttributesDbFieldAdd($id)
+
+            // refresh attributes select
+            refreshAttributesSelectDelete($id)
+
+            // refresh attributes select
+            refreshAttributesSelect()
+
+            // close modal 
+            $('.close').click();
+
+            // check add attribute button
+            refreshAttributesAddButton()
+        })
+
+        $(document).ready(function() {
+            $dbAttributes = {!! json_encode($attributesAll->load('measure')->toArray()) !!}
+            $dbAttributes = $dbAttributes.filter(comparer($attributes))
+            $dbAttributesCopy = $dbAttributes
+            refreshAttributesSelect()
+            refreshAttributesAddButton()
+            
+            $('#attributes').empty()
+            if (!$.isEmptyObject($attributes)) {
+                $attributes.forEach(element => {
+                    $attribute =    '<div class="position-relative row form-group">' +
+                                        '<label for="attribute-' + element.id + '" class="col-sm-2 col-form-label">' + element.name.substr(0,1).toUpperCase() + element.name.substr(1); 
+                    if (element.measure != null)
+                        $attribute += ' (' + element.measure.name + ')'
+                    $attribute +=       ' *</label>' +
+                                        '<div class="col-sm-10">' +
+                                            '<input name="values[]" id="attribute-' + element.id + '" type="text" class="form-control" value="' + element.pivot.value + '">' +
+                                            '<input name="attributes[]" type="hidden" value="' + element.id + '">' +
+                                        '</div>' +
+                                    '</div>'
+                    $('#attributes').append($attribute)
+                })
+            }
+
+            $type = $('#type').val()
+            if ($type == 3) {
                 $('#discount').prop('disabled', false)
                 $('#discount').prop('required', true)
             } else {
                 $('#discount').prop('disabled', true)
                 $('#discount').prop('required', false)
+            }
+        })
+
+        $('#type').change(function() {
+            if ($(this).val() == 3) {
+                $('#discount').prop('disabled', false)
+                $('#discount').prop('required', true)
+                $('#discount').val(null)
+            } else {
+                $('#discount').prop('disabled', true)
+                $('#discount').prop('required', false)
+                $('#discount').val(null)
             }
         })
 
@@ -129,9 +293,28 @@
                 data: {
                     id: $id
                 },
-                success: function(data) {
-                    $('#attributes').empty()
-                    data.forEach(element => {
+                success: function($data) {
+                    $categoryAttributes = $data.filter(comparer($attributes))
+
+                    $temp = $categoryAttributes.slice()
+                    $intersectionAttributes = $dbAttributesCopy.filter(function(attribute) {
+                        return $attributes.some(function(obj) {
+                            return obj.id === attribute.id
+                        })
+                    })
+                    if (!$.isEmptyObject($intersectionAttributes))
+                        $intersectionAttributes.forEach(element => {
+                            $temp.push(element)
+                        })
+                        
+                    $dbAttributes = $dbAttributesCopy.filter(comparer($temp))
+                    if ($.isEmptyObject($categoryAttributes))
+                        $dbAttributes = $dbAttributesCopy.filter(comparer($attributes))
+                    refreshAttributesSelect()
+                    refreshAttributesAddButton()
+                    
+                    $('#attributesCategory').empty()
+                    $categoryAttributes.forEach(element => {
                         $attribute =    '<div class="position-relative row form-group">' +
                                             '<label for="attribute-' + element.id + '" class="col-sm-2 col-form-label">' + element.name.substr(0,1).toUpperCase() + element.name.substr(1); 
                         if (element.measure != null)
@@ -142,7 +325,7 @@
                                                 '<input name="attributes[]" type="hidden" value="' + element.id + '">' +
                                             '</div>' +
                                         '</div>'
-                        $('#attributes').append($attribute)
+                        $('#attributesCategory').append($attribute)
                     });
                 },
                 error: function(error) {
@@ -154,6 +337,6 @@
         tinymce.init({
             selector:'#description',
             language: 'ru'
-            });
+        })
     </script>
 @endpush
