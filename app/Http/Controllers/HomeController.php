@@ -12,6 +12,13 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $category = null;
+        $minPrice = 0;
+        $maxPrice = 0;
+        $curMinPrice = null;
+        $curMaxPrice = null;
+        $mainProduct = Product::where('quantity', '>', 0)->where('type', 2)->orderBy('created_at', 'desc')->first()->load('images');
+        // dd($mainProduct);
         $slides = Banner::where('order', 1)->get();
         $banners1 = Banner::where('order', 2)->get();
         $banners2 = Banner::where('order', 3)->get();
@@ -19,6 +26,6 @@ class HomeController extends Controller
         $productsNew = Product::where('type', 1)->latest()->limit(4)->get();
         $productsHit = Product::where('type', 2)->latest()->limit(10)->get();
         $productsDiscount = Product::where('type', 3)->latest()->limit(5)->get();
-        return view('home.main.index', compact('slides', 'banners1', 'banners2', 'categories', 'productsNew', 'productsHit', 'productsDiscount'));
+        return view('home.main.index', compact('slides', 'banners1', 'banners2', 'categories', 'productsNew', 'productsHit', 'productsDiscount', 'mainProduct', 'category', 'minPrice', 'maxPrice', 'curMinPrice', 'curMaxPrice'));
     }
 }

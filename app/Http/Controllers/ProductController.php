@@ -8,10 +8,17 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function show()
+    public function show(Product $product)
     {
+        $category = null;
+        $minPrice = 0;
+        $maxPrice = 0;
+        $curMinPrice = null;
+        $curMaxPrice = null;
+        $category_id = $product->category->id;
+        $similarProducts = Product::where('category_id', $category_id)->limit(10)->get();
         $categories = Category::where('parent_id', null)->get();
-        return view('home.products.show', compact('categories'));
+        return view('home.products.show', compact('categories', 'product', 'similarProducts', 'category', 'minPrice', 'maxPrice', 'curMinPrice', 'curMaxPrice'));
     }
 
     public function addToCart(Product $product)

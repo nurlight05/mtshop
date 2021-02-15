@@ -13,7 +13,7 @@
 				</div>	
 				<div class="email__form">
 					<form action="">
-						<input class="input main-color" type="text" placeholder="e-mail">
+						<input class="input main-color" type="text" placeholder="e-mail" required>
 						<div class="email__check">
 							<div class="form-group">
                                 <input id="conf" type="checkbox" onclick="compare();">

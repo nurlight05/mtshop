@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Attribute;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 
@@ -15,32 +16,41 @@ class AdminProductController extends Controller
 {
     public function index(Request $request)
     {
+        $query = "";
         $productsType = null;
-        $products = Product::all();
+        $products = Product::where('id', '>', 0);
         $categories = Category::all();
 
         if ($request->has('type')) {
             if ($request->type == 'new') {
                 $productsType = 'Новые товары';
-                $products = Product::where('type', 1)->get();
+                $products = Product::where('type', 1);
             }
             if ($request->type == 'hit') {
                 $productsType = 'Хиты продаж';
-                $products = Product::where('type', 2)->get();
+                $products = Product::where('type', 2);
             }
             if ($request->type == 'dis') {
                 $productsType = 'По акции';
-                $products = Product::where('type', 3)->get();
+                $products = Product::where('type', 3);
             }
         }
+
+        if ($request->has('query')) {
+            $query = $request->get('query');
+            $products = $products->where('name', 'LIKE', '%'.$query.'%')->orWhere('vcode', 'LIKE', '%'.$query.'%');
+        }
+
+        $products = $products->orderByDesc('created_at')->paginate(30)->onEachSide(3);
 
         return view('admin.products.index', compact('products', 'productsType', 'categories'));
     }
 
     public function create()
     {
+        $attributesAll = Attribute::all();
         $categories = Category::where('parent_id', null)->get();
-        return view('admin.products.create', compact('categories'));
+        return view('admin.products.create', compact('categories', 'attributesAll'));
     }
 
     public function store(Request $request)
@@ -130,9 +140,10 @@ class AdminProductController extends Controller
 
     public function edit($slug)
     {
+        $attributesAll = Attribute::all();
         $product = Product::getProductBySlug($slug);
         $categories = Category::where('parent_id', null)->get();
-        return view('admin.products.edit', compact('product', 'categories'));
+        return view('admin.products.edit', compact('product', 'categories', 'attributesAll'));
     }
 
     public function update(Request $request)
@@ -221,9 +232,15 @@ class AdminProductController extends Controller
         return redirect()->route('mtshop.admin.products.show', ['slug' => $product->slug])->withSuccess('Товар успешно обновлен!');
     }
 
-    public function delete($slug)
+    public function delete(Product $product)
     {
-        dd($slug);
+        if ($product->orders()->exists())
+            return back()->withErrors('Товар имеется в данных некоторых заказов!');
+            
+        $product->images()->delete();
+        $product->delete();
+        
+        return redirect()->route('mtshop.admin.products')->withSuccess('Данный товар успешно удален!');
     }
 
     public function submit(Request $request)
@@ -272,6 +289,24 @@ class AdminProductController extends Controller
                 }
                 $category = Category::find($request->category);
                 return redirect()->route('mtshop.admin.products')->withSuccess('Выбранные товары успешно перемещены в категорию ' . $category->name . '!');
+                break;
+
+            case 'delete':
+                try {
+                    $products = Product::whereIn('id', $request['products'])->get();
+                    foreach ($products as $product) {
+                        if ($product->orders()->exists())
+                            return back()->withErrors('Некоторые товары имеется в данные некоторых заказов!');
+                    }
+                    foreach ($products as $product) {
+                        if ($product->images()->exists())
+                            $product->images()->delete();
+                        $product->delete();
+                    }
+                    return redirect()->route('mtshop.admin.products')->withSuccess('Выбранные товары успешно удалены!');
+                } catch (Throwable $th) {
+                    return back()->withErrors('Некоторые товары имеется в данные некоторых заказов!');
+                }
                 break;
 
             default:

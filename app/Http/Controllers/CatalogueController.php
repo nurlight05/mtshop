@@ -23,6 +23,8 @@ class CatalogueController extends Controller
         $products = null;
         $minPrice = 0;
         $maxPrice = 0;
+        $curMinPrice = null;
+        $curMaxPrice = null;
         
         if ($request->category) {
             $category = Category::getCategoryBySlug($request->category);
@@ -43,6 +45,8 @@ class CatalogueController extends Controller
         if ($request->method() == 'POST') {
             $min = $request->min_price;
             $max = $request->max_price;
+            $curMinPrice = $request->min_price;
+            $curMaxPrice = $request->max_price;
             $products = $products->whereBetween('price', [$min, $max]);
         }
 
@@ -67,6 +71,6 @@ class CatalogueController extends Controller
         }
         $products = $products->paginate($paginate);
 
-        return view('home.catalogue.index', compact('categories', 'category', 'products', 'minPrice', 'maxPrice', 'productsDiscount'));
+        return view('home.catalogue.index', compact('categories', 'category', 'products', 'minPrice', 'maxPrice', 'productsDiscount', 'curMinPrice', 'curMaxPrice'));
     }
 }

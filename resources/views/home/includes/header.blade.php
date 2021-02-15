@@ -106,9 +106,9 @@
     </div>
     <div class="second__header__search">
         <i class="fa fa-search" aria-hidden="true"></i>
-        <form action="{{ route('mtshop.search.index') }}" method="POST">
-            @csrf
-            <input id="search_input" type="search" name="query" placeholder="Более 30 000 товаров" required="">
+        <form action="{{ route('mtshop.search.index') }}" method="GET">
+            {{-- @csrf --}}
+            <input id="search_input" type="search" name="query" placeholder="Более 30 000 товаров" value="{{ request()->input('query') ?? '' }}" required="">
         </form>
         <div id="display"></div>
     </div>

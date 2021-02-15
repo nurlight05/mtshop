@@ -37,9 +37,14 @@ Route::get('/products/{product:slug}/show', [ProductController::class, 'show'])-
 Route::get('/products/{product:slug}/add-to-cart', [ProductController::class, 'addToCart'])->name('mtshop.products.addtocart');
 Route::get('/products/{product:slug}/remove-from-cart', [ProductController::class, 'removeFromCart'])->name('mtshop.products.removefromcart');
 
-Route::post('/search', [SearchController::class, 'index'])->name('mtshop.search.index');
+Route::match(['get', 'post'], '/search', [SearchController::class, 'index'])->name('mtshop.search.index');
 
 Route::post('/order/store', [OrderController::class, 'store'])->name('mtshop.order.store');
+Route::get('/order/{order}/create-payment', [OrderController::class, 'createPayment'])->name('mtshop.order.create-payment');
+Route::get('/order/success', [OrderController::class, 'success'])->name('mtshop.order.success');
+
+Route::get('integration/kaspi/generate', [AdminController::class, 'generateKaspiXml'])->name('mtshop.admin.integration.kaspi.generate');
+Route::get('integration/satu/generate', [AdminController::class, 'generateSatuXml'])->name('mtshop.admin.integration.satu.generate');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('mtshop.admin.index');
@@ -47,6 +52,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('profile', [AdminController::class, 'profile'])->name('mtshop.admin.profile');
     Route::get('profile/edit', [AdminController::class, 'edit'])->name('mtshop.admin.profile.edit');
     Route::post('profile/update', [AdminController::class, 'update'])->name('mtshop.admin.profile.update');
+
+    Route::get('integration', [AdminController::class, 'integration'])->name('mtshop.admin.integration');
 
     Route::get('banners', [AdminBannerController::class, 'index'])->name('mtshop.admin.banners');
     Route::get('banners/{banner}/edit', [AdminBannerController::class, 'edit'])->name('mtshop.admin.banners.edit');
@@ -58,13 +65,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('products/{slug}/show', [AdminProductController::class, 'show'])->name('mtshop.admin.products.show');
     Route::get('products/{slug}/edit', [AdminProductController::class, 'edit'])->name('mtshop.admin.products.edit');
     Route::post('products/{slug}/update', [AdminProductController::class, 'update'])->name('mtshop.admin.products.update');
-    Route::get('products/{slug}/delete', [AdminProductController::class, 'delete'])->name('mtshop.admin.products.delete');
+    Route::get('products/{product:slug}/delete', [AdminProductController::class, 'delete'])->name('mtshop.admin.products.delete');
     Route::post('products/all/submit', [AdminProductController::class, 'submit'])->name('mtshop.admin.products.submit');
     Route::post('products/image/{id}/delete', [AdminProductController::class, 'submit'])->name('mtshop.admin.products.image.delete');
 
     Route::get('orders', [AdminOrderController::class, 'index'])->name('mtshop.admin.orders');
-    Route::get('orders/{id}/show', [AdminOrderController::class, 'show'])->name('mtshop.admin.orders.show');
-    Route::get('orders/{id}/delete', [AdminOrderController::class, 'delete'])->name('mtshop.admin.orders.delete');
+    Route::get('orders/{order}/show', [AdminOrderController::class, 'show'])->name('mtshop.admin.orders.show');
+    Route::get('orders/{order}/check-as-paid', [AdminOrderController::class, 'checkAsPaid'])->name('mtshop.admin.orders.check-as-paid');
+    Route::get('orders/{order}/delete', [AdminOrderController::class, 'delete'])->name('mtshop.admin.orders.delete');
+    Route::post('orders/all/submit', [AdminOrderController::class, 'submit'])->name('mtshop.admin.orders.submit');
 
     Route::get('categories', [AdminCategoryController::class, 'index'])->name('mtshop.admin.categories');
     Route::get('categories/create', [AdminCategoryController::class, 'create'])->name('mtshop.admin.categories.create');

@@ -25,4 +25,21 @@ class Order extends Model
     public function products() {
         return $this->belongsToMany(Product::class)->withPivot('quantity', 'price')->withTimestamps();
     }
+
+    public function getAmountAttribute() {
+        $amount = 0;
+        $products = $this->products;
+        foreach ($products as $product) {
+            $amount += $product->pivot->price;
+        }
+        return $amount;
+    }
+
+    public function getDeliveryTypeTextAttribute() {
+        $deliveryType = $this->delivery_type;
+        if ($deliveryType == 1) {
+            return 'Самовывоз';
+        }
+        return 'Курьер';
+    }
 }

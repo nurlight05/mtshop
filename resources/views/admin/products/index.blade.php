@@ -10,12 +10,38 @@
 
 @section('content')
 <div class="">
+    <div class="row align-items-stretch">
+        <div class="col-md-6">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                    <form action="{{ route('mtshop.admin.products') }}" method="GET">
+                        <div class="input-group">
+                            <input id="input-kaspi" type="text" name="query" class="form-control" value="{{ request()->input('query') ?? '' }}" placeholder="Введите текст для поиска...">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary">
+                                    <i class="pe-7s-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 search-result">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                    Найдено товаров: {{ $products->total() }}
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="main-card mb-3 card">
                 <form action="{{ route('mtshop.admin.products.submit') }}" method="post">
                     @csrf
-                    <div class="card-header">{{ $productsType ?? 'Все товары' }}
+                    <div class="card-header">
+                        {{ $productsType ?? 'Все товары' }}
                         <div class="btn-actions-pane-right">
                             <div role="group" class="btn-group-sm btn-group">
                                 <button class="@if (!$productsType) active @endif btn btn-primary" type="button" onclick="location.href='{{ route('mtshop.admin.products') }}'">Все</button>
@@ -51,7 +77,7 @@
                                             <div class="widget-content p-0">
                                                 <div class="widget-content-wrapper">
                                                     <div class="widget-content-left flex2">
-                                                        <div class="widget-heading text-truncate" style="max-width: 410px;">{{ $item->name }}</div>
+                                                        <div class="widget-heading text-truncate" style="max-width: 410px;">{!! $item->name !!}</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -67,7 +93,7 @@
                                             <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" onclick="location.href='{{ route('mtshop.admin.products.edit', ['slug' => $item->slug]) }}'" title="Редактировать">
                                                 <i class="pe-7s-pen"></i>
                                             </button>
-                                            <button type="button" id="PopoverCustomT-1" class="btn btn-danger btn-sm" onclick="location.href='{{ route('mtshop.admin.products.delete', ['slug' => $item->slug]) }}'" title="Удалить" disabled>
+                                            <button type="button" id="PopoverCustomT-1" class="btn btn-danger btn-sm" onclick="location.href='{{ route('mtshop.admin.products.delete', ['product' => $item->slug]) }}'" title="Удалить">
                                                 <i class="pe-7s-trash"></i>
                                             </button>
                                         </td>
@@ -87,7 +113,7 @@
                                 <button class="btn-wide btn btn-primary">С отмеченными:</button>
                                 <button type="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle-split dropdown-toggle btn btn-primary"><span class="sr-only">Toggle Dropdown</span></button>
                                 <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu">
-                                    <button type="submit" name="action" value="delete" tabindex="0" class="dropdown-item btn-outline-danger" disabled>Удалить</button>
+                                    <button type="submit" name="action" value="delete" tabindex="0" class="dropdown-item btn-outline-danger">Удалить</button>
                                     <div tabindex="-1" class="dropdown-divider"></div>
                                     <h6 tabindex="-1" class="dropdown-header">Переместить в</h6>
                                     <button type="submit" name="action" value="move-to-hit" tabindex="0" class="dropdown-item">Хит продаж</button>
@@ -105,6 +131,7 @@
                                 </div>
                             </div>
                         </div>
+                        {!! $products->appends(request()->except('page'))->links('admin.includes.pagination') !!}
                     </div>
                 </form>
             </div>
@@ -112,6 +139,21 @@
     </div>
 </div>
 @endsection
+
+@push('styles')
+    <style>
+        .search-result .card{
+            height: calc(100% - 30px);
+        }
+
+        .search-result .card-body {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+    </style>
+@endpush
 
 @push('scripts')
     <script>

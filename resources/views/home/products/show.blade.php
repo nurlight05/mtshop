@@ -13,7 +13,7 @@
 				<i class="fa fa-angle-right" aria-hidden="true">
 				</i>
 				<span class="current">
-				  	Корзина
+                    {{ $product->name }}
 				</span>
 			</aside>
 		</div>
@@ -21,54 +21,43 @@
 			<div class="product__first p_order1">
 				<div class="product__header green">
 					<span>
-						20%
+                        @if ($product->discount)
+                            {{ $product->discount }}%
+                        @endif
 					</span>
 				</div>
 				<div class="sl">
-						<div class="sl_slide ">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" class="sl__img" >
-						</div>
-						<div class="sl_slide ">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" class="sl__img" >
-						</div>
-						<div class="sl_slide ">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" class="sl__img" >
-						</div>
-						<div class="sl_slide ">
-							<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" class="sl__img" >
-						</div>
+                    @if ($product->images()->exists())
+                        @foreach ($product->images as $item)
+                            <div class="sl_slide ">
+                                <img src="{{ asset($item->url) }}" class="sl__img" >
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="sl_slide ">
+                            <img src="{{ asset('assets/home/img/products/no_photo.png') }}" class="sl__img" >
+                        </div>
+                    @endif
 				</div>
 				<div class="sl2">
-						<div class="sl2__slide">
-							<a href="{{ route('mtshop.products.show') }}">
-								<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-							</a>
-						</div>
-						<div class="sl2__slide">
-							<a href="{{ route('mtshop.products.show') }}">
-								<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-							</a>
-						</div>
-						<div class="sl2__slide">
-							<a href="{{ route('mtshop.products.show') }}">
-								<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-							</a>
-						</div>
-						<div class="sl2__slide">
-							<a href="{{ route('mtshop.products.show') }}">
-								<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-							</a>
-						</div>
+                    @if ($product->images()->exists())
+                        @foreach ($product->images as $item)
+                            <div class="sl2__slide">
+                                <a>
+                                    <img src="{{ asset($item->url) }}" alt="">
+                                </a>
+                            </div>
+                        @endforeach
+                    @endif
 				</div>
 			</div>
 			<div class="product__two p_order2">
 				<div>
-					<p>Электротовары
-					</p>
+					<p>{{ $product->category->name }}</p>
 				</div>
 				<div class="">
 					<h3 class="product__title">
-						 Углошлифовальная машина (болгарка) DWE4051 LAKA DeWALT 
+						{{ $product->name }}
 					</h3>
 				</div>
 				<div class="characteristic">
@@ -76,28 +65,16 @@
                         <tbody>
                             <tr>
                                 <td>Артикул</td>
-                                <td>DWE4051 LAKA</td>
+                                <td>{{ $product->vcode }}</td>
                             </tr>
-                            <tr>
-                                <td>Бренд</td>
-                                <td>DeWALT</td>
-                            </tr>
-                            <tr>
-                                <td>Вес, кг</td>
-                                <td>1,9</td>
-                            </tr>
-                            <tr>
-                                <td>Потребляемая мощность, Вт:</td>
-                                <td>800 Вт</td>
-                            </tr>
-							<tr class="">
-								<td>Страна производитель:</td>
-								<td>Китай</td>
-							</tr>
-                            <tr>
-                                <td>Максимальный размер диска</td>
-                                <td>125</td>
-                            </tr>
+                            @forelse ($product->attributes as $item)
+                                <tr>
+                                    <td>{{ $item->name }}@if($item->measure){{ ', '.$item->measure->name }}@endif</td>
+                                    <td>{{ $item->pivot->value ?? '-' }}</td>
+                                </tr>
+                            @empty
+                                {{-- Nothing --}}
+                            @endforelse
                     	</tbody>
                 	</table>
                 </div>
@@ -105,7 +82,11 @@
 			<div class="product__three p_order4">
 				<div class="product__three__header">
 					<p>Наличие:</p>
-					<span>Товар в наличии</span>
+                    @if ($product->quantity > 0)
+                        <span>Товар в наличии</span>
+                    @else
+                        <span class="text-danger">Товар не в наличии</span>
+                    @endif
 				</div>
 				<div class="product__main">
 					<div class="product__main__title">
@@ -113,24 +94,30 @@
 					</div>
 					<div class="product__main__price">
 						<span class="product__new__price">
-							25890 тг
+                            @if ($product->discount)
+                                {{ $product->discount_price }} тг
+                            @else
+                                {{ $product->price }} тг
+                            @endif
 						</span>
-						<span class="product__old__price">
-							29890 тг
-						</span>
+                        @if ($product->discount)
+                            <span class="product__old__price" data-before-content="{{ '-'.$product->discount.'%' }}">
+                                {{ $product->price }} тг
+                            </span>
+                        @endif
 					</div>
-					<div class="product__main__count">
+					{{-- <div class="product__main__count">
 						<span>Количество:</span>
 						<span class="product__count__minus">-</span>
 						<input type="input" class="product__count__text" value="1"/>
 						<span class="product__count__plus">+</span>
-					</div>
-					<button class="btn-2 btn-buy btn-100">
-						Добавить в корзину <i class="fas fa-cart-arrow-down"></i>
-					</button>
-					<button class="btn-2 btn-order btn-100">
+					</div> --}}
+                    <button class="btn btn-primary" style="border: 1px solid #004BA3; width: 100%; background-color: #004BA3; border: #004BA3; padding: 5px 19px; margin: 5px 0;" @if ($product->quantity == 0) disabled @endif onclick="location.href='{{ route('mtshop.products.addtocart', ['product' => $product->slug]) }}'">
+                        Добавить в корзину <i class="fas fa-cart-arrow-down"></i>
+                    </button>
+					{{-- <button class="btn-2 btn-order btn-100">
 						Быстрый заказ 
-					</button>										
+					</button>										 --}}
 				</div>
 				<div class="product__footer">
 					<div class="">
@@ -158,40 +145,16 @@
                             <tbody>
 	                            <tr>
 	                                <td>Артикул</td>
-	                                <td>DWE4051 LAKA</td>
+	                                <td>{{ $product->vcode }}</td>
 	                            </tr>
-	                            <tr>
-	                                <td>Бренд</td>
-	                                <td>DeWALT</td>
-	                            </tr>
-	                            <tr>
-	                                <td>Максимальный размер диска</td>
-	                                <td>125</td>
-	                            </tr>
-	                            <tr>
-	                                <td>Вес, кг</td>
-	                                <td>1,9</td>
-	                            </tr>
-	                            <tr>
-	                                <td>Посадочный диаметр диска, мм</td>
-	                                <td>22,2</td>
-	                            </tr>
-	                            <tr>
-	                                <td>Потребляемая мощность, Вт:</td>
-	                                <td>800 Вт</td>
-	                            </tr>
-	                            <tr class="">
-									<td>Частота вращения об/мин</td>
-									<td>11800</td>
-								</tr>
-								<tr class="">
-									<td>Регулировка оборотов</td>
-									<td>есть</td>
-								</tr>
-								<tr class="">
-									<td>Страна производитель:</td>
-									<td>Китай</td>
-								</tr>
+                                @forelse ($product->attributes as $item)
+                                    <tr>
+                                        <td>{{ $item->name }}@if($item->measure){{ ', '.$item->measure->name }}@endif</td>
+                                        <td>{{ $item->pivot->value ?? '-' }}</td>
+                                    </tr>
+                                @empty
+                                    {{-- Nothing --}}
+                                @endforelse
                         	</tbody>
                     	</table>
                     </div>
@@ -199,15 +162,7 @@
                 <div class="col-lg-6 col-md-6 ml-auto">
                     <h3>Описание</h3>
                     <div class="description__text">
-                        <p>
-							Углошлифовальная машина.  Корпус оптимального диаметра обеспечивает удобный захват и превосходную эргономику. Низкопрофильный корпус редуктора для работы в труднодоступных местах.
-						</p>
-						<p>  
-							Эпоксидное покрытие обмотки защищает двигатель от абразивной пыли и увеличивает надежность инструмента. Независимый и подпружиненный щеткодержатель для увеличения срока службы щеток. Обмотки статора с прямыми выводами без использования клемм обеспечивают высокую надежность инструмента.
-						</p>
-						<p> 
-							Использование только шариковых подшипников в конструкции увеличивает эффективность и долговечность инструмента. Самоотключающиеся щетки защищают якорь от повреждения, что приводит к увеличению срока службы электродвигателя. Верхнее расположение кнопки блокировки шпинделя обеспечивает максимальную глубину реза.
-						</p>				
+                        {!! $product->description ?? '' !!}				
                     </div>
                 </div>
                 
@@ -225,144 +180,42 @@
 				</div>
 				<div class="col-lg-12">
 				    <div class="similar__grid__slider">
-						<div class="card">
-							<div class="box__header">
-								<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-								</p>
-								<span class="box__header__discounts">-20%</span>
-							</div>
-							<a href="{{ route('mtshop.products.show') }}">
-								<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-							</a>
-							<p class="card__type">Электротовары
-							</p>
-							<h3 class="card__title ">
-							     <a href="{{ route('mtshop.products.show') }}">DeWALT LAKA DWE4051</a> 
-						    </h3>
-							<div class="box__header">
-								<span class=" btn-price">
-									25890 тг
-								</span>
-								<button class="btn-2 btn-buy">
-									В корзину <i class="fas fa-cart-arrow-down"></i>
-								</button>
-							</div>
-						</div>
-						<div class="card">
-							<div class="box__header">
-								<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-								</p>
-								<span class="box__header__discounts">-20%</span>
-							</div>
-							<a href="{{ route('mtshop.products.show') }}">
-								<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-							</a>
-							<p class="card__type">Электротовары
-							</p>
-							<h3 class="card__title ">
-							     <a href="{{ route('mtshop.products.show') }}">DeWALT LAKA DWE4051</a> 
-						    </h3>
-							<div class="box__header">
-								<span class="card-price">
-									25890 тг
-								</span>
-								<button class="btn-2 btn-buy">
-									В корзину <i class="fas fa-cart-arrow-down"></i>
-								</button>
-							</div>
-						</div>
-						<div class="card">
-							<div class="box__header">
-								<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-								</p>
-								<span class="box__header__discounts">-20%</span>
-							</div>
-							<a href="{{ route('mtshop.products.show') }}">
-								<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-							</a>
-							<p class="card__type">Электротовары
-							</p>
-							<h3 class="card__title ">
-							     <a href="{{ route('mtshop.products.show') }}">DeWALT LAKA DWE4051</a> 
-						    </h3>
-							<div class="box__header">
-								<span class="card-price">
-									25890 тг
-								</span>
-								<button class="btn-2 btn-buy">
-									В корзину <i class="fas fa-cart-arrow-down"></i>
-								</button>
-							</div>
-						</div>
-						<div class="card">
-							<div class="box__header">
-								<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-								</p>
-								<span class="box__header__discounts">-20%</span>
-							</div>
-							<a href="{{ route('mtshop.products.show') }}">
-								<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-							</a>
-							<p class="card__type">Электротовары
-							</p>
-							<h3 class="card__title ">
-							     <a href="{{ route('mtshop.products.show') }}">DeWALT LAKA DWE4051</a> 
-						    </h3>
-							<div class="box__header">
-								<span class="card-price">
-									25890 тг
-								</span>
-								<button class="btn-2 btn-buy">
-									В корзину <i class="fas fa-cart-arrow-down"></i>
-								</button>
-							</div>
-						</div>
-						<div class="card">
-							<div class="box__header">
-								<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-								</p>
-								<span class="box__header__discounts">-20%</span>
-							</div>
-							<a href="{{ route('mtshop.products.show') }}">
-								<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-							</a>
-							<p class="card__type">Электротовары
-							</p>
-							<h3 class="card__title ">
-							     <a href="{{ route('mtshop.products.show') }}">DeWALT LAKA DWE4051</a> 
-						    </h3>
-							<div class="box__header">
-								<span class="card-price">
-									25890 тг
-								</span>
-								<button class="btn-2 btn-buy">
-									В корзину <i class="fas fa-cart-arrow-down"></i>
-								</button>
-							</div>
-						</div>
-						<div class="card">
-							<div class="box__header">
-								<p class="card__type">Артикул:<span class="card__type"> 000541</span>
-								</p>
-								<span class="box__header__discounts">-20%</span>
-							</div>
-							<a href="{{ route('mtshop.products.show') }}">
-								<img src="{{ asset('assets/home/img/electro_mat/template.png') }}" alt="">
-							</a>
-							<p class="card__type">Электротовары
-							</p>
-							<h3 class="card__title ">
-							     <a href="{{ route('mtshop.products.show') }}">DeWALT LAKA DWE4051</a> 
-						    </h3>
-							<div class="box__header">
-								<span class="card-price">
-									25890 тг
-								</span>
-								<button class="btn-2 btn-buy">
-									В корзину <i class="fas fa-cart-arrow-down"></i>
-								</button>
-							</div>
-						</div>
+                        @forelse ($similarProducts as $item)
+                            <div class="card">
+                                <div class="box__header">
+                                    <p class="card__type">Артикул:<span class="card__type"> {{ $item->vcode }}</span>
+                                    </p>
+                                    @if ($item->discount)
+                                        <span class="box__header__discounts">-{{ $item->discount }}%</span>
+                                    @endif
+                                </div>
+                                <a href="{{ route('mtshop.products.show', ['product' => $item->slug]) }}">
+                                    @if ($item->images()->exists())
+                                        <img src="{{ $item->images[0]->url }}" alt="">
+                                    @else
+                                        <img src="{{ asset('assets/home/img/products/no_photo.png') }}" alt="">
+                                    @endif
+                                </a>
+                                <p class="card__type">{{ $item->category->name }}</p>
+                                <h3 class="card__title ">
+                                    <a class="text-truncate" href="">{{ $item->name }}</a> 
+                                </h3>
+                                <div class="box__header">
+                                    <span class=" btn-price">
+                                        @if ($item->discount)
+                                            {{ $item->discount_price }} тг
+                                        @else
+                                            {{ $item->price }} тг
+                                        @endif
+                                    </span>
+                                    <button class="btn btn-primary" style="background-color: #004BA3; border: #004BA3; padding: 0 8px;" @if ($item->quantity == 0) disabled @endif onclick="location.href='{{ route('mtshop.products.addtocart', ['product' => $item->slug]) }}'">
+                                        В корзину <i class="fas fa-cart-arrow-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        @empty
+                            {{-- Nothing --}}
+                        @endforelse
 				    </div>
 				</div>
 			</div>
